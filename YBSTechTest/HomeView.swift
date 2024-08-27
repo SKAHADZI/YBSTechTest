@@ -10,22 +10,28 @@ import SwiftUI
 struct HomeView: View {
     
     @StateObject var vm = PhotoListViewModelImpl()
+    
     var body: some View {
-        VStack {
-
+        NavigationStack {
             ScrollView {
-                if let photoDetail = vm.photos?.photos.photo {
-                    ForEach(photoDetail, id: \.uuid) { photo in
-                        Text(photo.owner)
-                        AsyncImage(url: vm.buildImageURL(photo: photo))
-                            .frame(width: 500, height: 500)
+                LazyVStack {
+                    ForEach(vm.images, id: \.1.uuid) { (image,photo) in
+                        NavigationLink("Go to group 2") {
+                            Text("Go to group 2")
+                        }
+                        Group {
+                            Image(uiImage: image)
+                                .resizable()
+                                .scaledToFit()
+                                .frame(width: 500, height: 500)
+                            Text(photo.owner)
+                        }
                     }
                 }
-
             }
-        }
-        .onAppear {
-            vm.getPhotoSearch()
+            .onAppear {
+                vm.getPhotoSearch()
+            }
         }
     }
 }

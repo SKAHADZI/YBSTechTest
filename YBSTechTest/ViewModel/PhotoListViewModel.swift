@@ -22,7 +22,9 @@ final class PhotoListViewModelImpl: PhotoListViewModel, ObservableObject {
     @Published var serverId: [String] = []
     @Published var secret: [String] = []
     @Published var id: [String] = []
-    @Published var images: [UIImage] = []
+    @Published var images: [(UIImage, Photo)] = []
+    private var isLoading = false
+    private var hasLoaded = false
     
     private var cancellables = Set<AnyCancellable>()
     
@@ -35,6 +37,10 @@ final class PhotoListViewModelImpl: PhotoListViewModel, ObservableObject {
     }
     
     func getPhotoSearch(text: String? = "Yorkshire") {
+        
+        guard !isLoading, !hasLoaded else { return }
+               isLoading = true
+               hasLoaded = true // Set here
         
         guard let searchText = text else { return }
         
@@ -52,36 +58,37 @@ final class PhotoListViewModelImpl: PhotoListViewModel, ObservableObject {
             } receiveValue: { [weak self] photoObject in
                 guard let self = self else { return }
                 self.photos = photoObject
-                if let photoArray = photoObject.photos.photo {
-                    self.serverId = photoArray.map { $0.server }
-                    self.secret = photoArray.map { $0.secret }
-                    self.id = photoArray.map { $0.id }
-                }
+                self.loadImages()
             }
             .store(in: &cancellables)
     }
     
-    func buildImageURL(photo: Photo) -> URL? {
-        return URL(string: "\(BaseUrl.photosUrl)\(photo.server)/\(photo.id)_\(photo.secret).jpg")
+    func buildImageURL(photo: Photo) -> String {
+        return "\(BaseUrl.photosUrl)\(photo.server)/\(photo.id)_\(photo.secret).jpg"
     }
-
-    func getPhotoImage() {
-        imageRequestService.downloadImage(serverId: self.serverId, id: self.id, secret: self.secret)
-            .sink { resultCompletion in
-                switch resultCompletion {
-                case .finished:
-                    print("We got ya image")
-                case .failure(let error):
-                    print("ImageService: \(error.localizedDescription)")
-                }
-            } receiveValue: { [weak self] images in
-                print(images)
-                guard let self = self else { return }
-                    DispatchQueue.main.async {
-                        self.images = images
-                }
+    
+    func loadImages() {
+        guard let photos = photos?.photos.photo else { return }
+        let photoID = photo.id
+                
+        guard images[photoID] == nil else {
+                    return  // Image already loaded
+        }
+        
+        let publisher = photos.map { photo in
+            self.imageRequestService.downloadImage(url: self.buildImageURL(photo: photo))
+                .map { image in (image, photo) }
+                .catch { _ in Just((UIImage(), photo)) }
+                .receive(on: DispatchQueue.main)
+                .eraseToAnyPublisher()
+        }
+        
+        Publishers.MergeMany(publisher)
+            .collect()
+            .sink { [weak self] combined in
+                self?.images = combined
             }
             .store(in: &cancellables)
+            
     }
 }
-
