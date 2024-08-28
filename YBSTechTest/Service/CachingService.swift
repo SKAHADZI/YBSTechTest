@@ -8,16 +8,11 @@
 import Foundation
 import SwiftUI
 
-protocol CachingService {
-    func getCachedImage(for key: String) -> UIImage?
-    func removeCachedImage(for key: String)
-    func cacheImage(_ image: UIImage, for key: String)
-    func clearCache()
-}
-
-final class CachingServiceImpl: CachingService {
+class CachingService {
     
+    public static let shared = CachingService()
     let cache = NSCache<NSString, UIImage>()
+    private init() {}
     
     func getCachedImage(for key: String) -> UIImage? {
         return cache.object(forKey: key as NSString)

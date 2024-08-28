@@ -23,6 +23,7 @@ struct Photo: Codable {
     let uuid = UUID()
     let id: String
     let owner: String
+    let farm: Int
     let secret: String
     let server: String
     let title: String 

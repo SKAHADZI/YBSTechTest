@@ -1,18 +1,19 @@
 //
-//  PhotoListService.swift
+//  TagListService.swift
 //  YBSTechTest
 //
-//  Created by Senam Ahadzi on 26/08/2024.
+//  Created by Senam Ahadzi on 27/08/2024.
 //
 
 import Combine
 import Foundation
 
-protocol PhotoListService {
-    func getPhotoList(text: String, userID: String, page: Int) -> AnyPublisher<PhotoObject, NetworkingError>
+protocol TagListService {
+    func getTags(for photo: Photo) -> AnyPublisher<PhotoInfo, NetworkingError>
+
 }
 
-class PhotoListServiceImpl: PhotoListService, ObservableObject {
+class TagListServiceImpl: TagListService, ObservableObject {
     
     private let networkService: NetworkRepository
     private let decodingErrorHandler: DecodingErrorHandler
@@ -22,15 +23,14 @@ class PhotoListServiceImpl: PhotoListService, ObservableObject {
         self.decodingErrorHandler = decodingErrorHandler
     }
     
-    func getPhotoList(text: String = "Yorkshire", userID: String = "", page: Int) -> AnyPublisher<PhotoObject, NetworkingError> {
+    func getTags(for photo: Photo) -> AnyPublisher<PhotoInfo, NetworkingError> {
         
-        guard let url = URL(string: "\(BaseUrl.baseUrl) /?method=flickr.photos.search&api_key=\(APIKey.apiKey)&text=\(text)&\(userID)&safe_search=1&page=\(page)&per_page=100format=json&nojsoncallback=1") else {
+        guard let url = URL(string: "\(BaseUrl.baseUrl) /?method=flickr.photos.getInfo&api_key=\(APIKey.apiKey)&photo_id=\(photo.id)&format=json&nojsoncallback=1") else {
             return Fail(error: NetworkingError.invalidURL)
                 .eraseToAnyPublisher()
         }
         
         let decoder = JSONDecoder()
-        decoder.keyDecodingStrategy = .convertFromSnakeCase
         decoder.dateDecodingStrategy = .secondsSince1970
         
         return networkService.request(url)
@@ -43,7 +43,7 @@ class PhotoListServiceImpl: PhotoListService, ObservableObject {
                 }
                 return data
             }
-            .decode(type: PhotoObject.self, decoder: decoder)
+            .decode(type: PhotoInfo.self, decoder: decoder)
             .mapError { error -> NetworkingError in
                 if let networkingError = error as? NetworkingError {
                     return networkingError

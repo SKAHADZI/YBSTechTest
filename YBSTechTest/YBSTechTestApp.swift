@@ -15,11 +15,13 @@ struct YBSTechTestApp: App {
 
     init() {
         _ = dependencyManager.resolveNetworkService()
-        _ = dependencyManager.resolveCachingService()
         _ = dependencyManager.resolveImageRequestService()
+        _ = dependencyManager.resolveTagListService()
         
         let photoListService = dependencyManager.resolvePhotoListService()
         _photoSearchVm = StateObject(wrappedValue: PhotoListViewModelImpl(photoListService: photoListService))
+        
+        UILabel.appearance(whenContainedInInstancesOf: [UINavigationBar.self]).adjustsFontSizeToFitWidth = true
     }
     var body: some Scene {
         WindowGroup {

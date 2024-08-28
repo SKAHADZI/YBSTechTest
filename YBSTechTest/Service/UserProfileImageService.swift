@@ -1,24 +1,26 @@
 //
-//  ImageRequestService.swift
+//  UserProfileImageService.swift
 //  YBSTechTest
 //
-//  Created by Senam Ahadzi on 26/08/2024.
+//  Created by Senam Ahadzi on 27/08/2024.
 //
 
 import Combine
 import Foundation
-import SwiftUI
+import UIKit
 
-protocol ImageRequestService {
+protocol UserProfileImageService {
     func downloadImage(url: String) -> AnyPublisher<UIImage, NetworkingError>
 }
 
-class ImageRequestServiceImpl: ImageRequestService, ObservableObject {
+class UserProfileImageServiceImpl: UserProfileImageService, ObservableObject {
     
     private let networkService: NetworkRepository
     
+    
     init(
         networkService: NetworkRepository = DIContainer.shared.resolve(NetworkRepository.self) ?? NetworkRepositoryImpl()
+        
     ){
         self.networkService = networkService
     }
@@ -30,12 +32,14 @@ class ImageRequestServiceImpl: ImageRequestService, ObservableObject {
                 .eraseToAnyPublisher()
         }
 #warning("Dont forget to store on disk")
-        if let cachedImage = CachingService.shared.getCachedImage(for: url.absoluteString){
+#warning("Images not pulling from cache")
+        if let cachedImage = CachingService.shared.getCachedImage(for: url.absoluteString) {
             print("Using cached image for URL: \(url)")
             return Just(cachedImage)
                 .setFailureType(to: NetworkingError.self)
                 .eraseToAnyPublisher()
-        } else {
+        }else {
+            print("No cached image found for URL: \(url.absoluteString)")
         }
         
         return networkService.request(url)
@@ -48,7 +52,8 @@ class ImageRequestServiceImpl: ImageRequestService, ObservableObject {
                       let image = UIImage(data: data) else {
                     throw(NetworkingError.invalidResponse)
                 }
-                CachingService.shared.cacheImage(image, for: url.description)
+                CachingService.shared.cacheImage(image, for: url.absoluteString)
+                print("/n/n caching profile image")
                 return image
             }
             .mapError{ error in
@@ -64,3 +69,4 @@ class ImageRequestServiceImpl: ImageRequestService, ObservableObject {
             .eraseToAnyPublisher()
     }
 }
+
