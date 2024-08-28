@@ -10,7 +10,7 @@ import Foundation
 import UIKit
 
 protocol PhotoListViewModel {
-    func getPhotoSearch(text: String?, userId: String?)
+    func getPhotoSearch(userId: String?)
 }
 
 final class PhotoListViewModelImpl: PhotoListViewModel, ObservableObject {
@@ -19,7 +19,7 @@ final class PhotoListViewModelImpl: PhotoListViewModel, ObservableObject {
     private let imageRequestService: ImageRequestService
     private let tagService: TagListService
     
-    @Published var photos: PhotoObject?
+    @Published var photos: [Photo] = []
     @Published var errorMessage: String?
     @Published var tags: [String: [Tag]] = [:]
     @Published var images: [String: UIImage] = [:]
@@ -34,7 +34,8 @@ final class PhotoListViewModelImpl: PhotoListViewModel, ObservableObject {
     private var cancellables = Set<AnyCancellable>()
     
     private var currentPage = 1
-    private let perPage = 100
+    private var isLastPage = false
+    
     
     init(photoListService: PhotoListService = DIContainer.shared.resolve(PhotoListService.self) ?? PhotoListServiceImpl(),
          imageRequestService: ImageRequestService = DIContainer.shared.resolve(ImageRequestService.self) ??
@@ -46,17 +47,17 @@ final class PhotoListViewModelImpl: PhotoListViewModel, ObservableObject {
         self.tagService = tagListService
     }
     
-    func getPhotoSearch(text: String? = "Yorkshire", userId: String?) {
+    func getPhotoSearch(userId: String?) {
         
         guard !isLoading else { return }
-
+        
         if hasLoaded && userId == lastUserID {
             return
         }
         
-        guard let searchText = text else { return }
+//        guard let searchText = text else { return }
         
-        photoListService.getPhotoList(text: searchText, userID: buildStringForUserID(userID: userId) ?? "" , page: currentPage)
+        photoListService.getPhotoList(userID: buildStringForUserID(userID: userId) ?? "" , page: currentPage)
             .sink { [weak self] completionResult in
                 switch completionResult {
                 case .finished:
@@ -69,8 +70,13 @@ final class PhotoListViewModelImpl: PhotoListViewModel, ObservableObject {
                 }
             } receiveValue: { [weak self] photoObject in
                 guard let self = self else { return }
-                self.photos = photoObject
-                self.lastUserID = userId
+                if photoObject.photos.photo?.isEmpty == true {
+                    self.isLastPage = true
+                } else {
+                    self.photos.append(contentsOf: photoObject.photos.photo ?? [])
+                    self.lastUserID = userId
+                    self.currentPage += 1
+                }
                 photoObject.photos.photo?.forEach { photo in
                     self.loadImages(for: photo)
                     self.loadPhotoInfo(for: photo)
@@ -102,7 +108,13 @@ final class PhotoListViewModelImpl: PhotoListViewModel, ObservableObject {
             .store(in: &cancellables)
     }
     
- private func loadPhotoInfo(for photo: Photo) {
+    func loadMorePhotos(userId: String?) {
+        if !isLastPage {
+            getPhotoSearch(userId: userId)
+        }
+    }
+    
+    private func loadPhotoInfo(for photo: Photo) {
         tagService.getTags(for: photo)
             .receive(on: DispatchQueue.main)
             .sink { completionResult in
@@ -111,7 +123,7 @@ final class PhotoListViewModelImpl: PhotoListViewModel, ObservableObject {
                     print("Tags are here")
                 case .failure(let error):
                     print("Error getting tags for photo \(photo.id): \(error.localizedDescription)")
-
+                    
                 }
             } receiveValue: { [weak self] tags in
                 guard let self = self else { return }
@@ -126,17 +138,17 @@ final class PhotoListViewModelImpl: PhotoListViewModel, ObservableObject {
 
 extension PhotoListViewModelImpl {
     func getPhotoWithTag(photoID: String) -> (photo: Photo, tag: Tag)? {
-            guard let photo = photos?.photos.photo?.first(where: { $0.id == photoID }),
-                  let tagsForPhoto = tags[photoID],
-                  let specificTag = tagsForPhoto.first(where: { $0.author == photo.owner }) else {
-                return nil
-            }
-            return (photo, specificTag)
+        guard let photo = photos.first(where: { $0.id == photoID }),
+              let tagsForPhoto = tags[photoID],
+              let specificTag = tagsForPhoto.first(where: { $0.author == photo.owner }) else {
+            return nil
         }
+        return (photo, specificTag)
+    }
     // Come back and combine the two
     func getPhotoInfo(for photoID: String) -> PhotoInfo? {
         // First, find the photo based on the photoID
-        guard let photo = photos?.photos.photo?.first(where: { $0.id == photoID }),
+        guard let photo = photos.first(where: { $0.id == photoID }),
               let photoTag = photoInfo[photoID] else { // Retrieve the full PhotoTag object from the photoInfo dictionary
             return nil
         }

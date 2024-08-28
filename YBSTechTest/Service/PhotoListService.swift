@@ -9,7 +9,7 @@ import Combine
 import Foundation
 
 protocol PhotoListService {
-    func getPhotoList(text: String, userID: String, page: Int) -> AnyPublisher<PhotoObject, NetworkingError>
+    func getPhotoList(userID: String, page: Int) -> AnyPublisher<PhotoObject, NetworkingError>
 }
 
 class PhotoListServiceImpl: PhotoListService, ObservableObject {
@@ -22,9 +22,9 @@ class PhotoListServiceImpl: PhotoListService, ObservableObject {
         self.decodingErrorHandler = decodingErrorHandler
     }
     
-    func getPhotoList(text: String = "Yorkshire", userID: String = "", page: Int) -> AnyPublisher<PhotoObject, NetworkingError> {
+    func getPhotoList(userID: String = "", page: Int) -> AnyPublisher<PhotoObject, NetworkingError> {
         
-        guard let url = URL(string: "\(BaseUrl.baseUrl) /?method=flickr.photos.search&api_key=\(APIKey.apiKey)&text=\(text)&\(userID)&safe_search=1&page=\(page)&per_page=100format=json&nojsoncallback=1") else {
+        guard let url = URL(string: "\(BaseUrl.baseUrl) /?method=flickr.photos.search&api_key=\(APIKey.apiKey)&text=Yorkshire\(userID)&safe_search=1&page=\(page)&per_page=100&format=json&nojsoncallback=1") else {
             return Fail(error: NetworkingError.invalidURL)
                 .eraseToAnyPublisher()
         }

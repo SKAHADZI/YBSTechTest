@@ -26,10 +26,10 @@ struct ImageDetailView: View {
                     .clipped()
                 Text(photo.title)
                     .font(.headline)
-                if let formattedDate = photoInfo.photo.formattedDate {
-                    Text(formattedDate)
-                        .font(.subheadline)
-                }
+//                if let formattedDate = photoInfo.photo.formattedDate {
+//                    Text(formattedDate)
+//                        .font(.subheadline)
+//                }
                 Text("Views: \(photoInfo.photo.views)")
                 
                 Text(photoInfo.photo.description._content)
