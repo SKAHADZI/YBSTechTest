@@ -14,13 +14,12 @@ struct PhotoCardView: View {
     let tag: Tag
     let photoInfo: PhotoInfo
     let photoID: String
-    @EnvironmentObject var vm: PhotoListViewModelImpl // EnvironmentObject for shared ViewModel
-    
+    @State private var isVisible = false    
     var body: some View {
         
         VStack(alignment: .leading, spacing: nil) {
             
-            NavigationLink(destination: UserPhotoGridView(userID: tag.author, authorName: tag.authorname).environmentObject(vm)) {
+            NavigationLink(destination: UserPhotoGridView(userID: tag.author, authorName: tag.authorname)) {
                 PhotoHeaderView(photo: photo, tag: tag)
             }
 
@@ -46,11 +45,19 @@ struct PhotoCardView: View {
                 .foregroundColor(.secondary)
         }
         .padding()
+        .onAppear {
+                self.isVisible = true
+        }
+        
         ScrollView(.horizontal) {
-            HStack {
-                TagBody(tag: tag).scaledToFit()
-                
-            }.padding(.leading, 8)
+            if let tags = photoInfo.photo.tags?.tag {
+                HStack {
+                    ForEach(tags, id: \.id) { photoTag in
+                        TagBody(tag: photoTag).scaledToFit()
+                            .padding(.leading, 8)
+                    }
+                }
+            }
         }
     }
 }

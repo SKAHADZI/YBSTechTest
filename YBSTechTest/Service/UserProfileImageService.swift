@@ -10,7 +10,7 @@ import Foundation
 import UIKit
 
 protocol UserProfileImageService {
-    func downloadImage(url: String) -> AnyPublisher<UIImage, NetworkingError>
+    func downloadImage(photoId: String, url: String) -> AnyPublisher<UIImage, NetworkingError>
 }
 
 class UserProfileImageServiceImpl: UserProfileImageService, ObservableObject {
@@ -25,7 +25,7 @@ class UserProfileImageServiceImpl: UserProfileImageService, ObservableObject {
         self.networkService = networkService
     }
     
-    func downloadImage(url: String) -> AnyPublisher<UIImage, NetworkingError> {
+    func downloadImage(photoId: String, url: String) -> AnyPublisher<UIImage, NetworkingError> {
         
         guard let url = URL(string: url) else {
             return Fail(error: NetworkingError.invalidURL)
@@ -33,13 +33,20 @@ class UserProfileImageServiceImpl: UserProfileImageService, ObservableObject {
         }
 #warning("Dont forget to store on disk")
 #warning("Images not pulling from cache")
-        if let cachedImage = CachingService.shared.getCachedImage(for: url.absoluteString) {
+        if let cachedImage = CachingService.shared.getCachedImage(for: photoId) {
             print("Using cached image for URL: \(url)")
             return Just(cachedImage)
                 .setFailureType(to: NetworkingError.self)
                 .eraseToAnyPublisher()
         }else {
             print("No cached image found for URL: \(url.absoluteString)")
+        }
+        
+        if let diskImage = FileStoreManager.shared.retrieveFromDisk(for: photoId) {
+            print("Using Disk image for URL: \(url), with id: \(photoId)")
+            return Just(diskImage)
+                .setFailureType(to: NetworkingError.self)
+                .eraseToAnyPublisher()
         }
         
         return networkService.request(url)
@@ -52,8 +59,9 @@ class UserProfileImageServiceImpl: UserProfileImageService, ObservableObject {
                       let image = UIImage(data: data) else {
                     throw(NetworkingError.invalidResponse)
                 }
-                CachingService.shared.cacheImage(image, for: url.absoluteString)
-                print("/n/n caching profile image")
+                CachingService.shared.cacheImage(image, for: photoId)
+                print("Adding image to disk for URL: \(url), with id: \(photoId)")
+                FileStoreManager.shared.addToDisk(image: image, for: photoId)
                 return image
             }
             .mapError{ error in

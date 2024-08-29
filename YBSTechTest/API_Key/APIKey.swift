@@ -8,6 +8,18 @@
 import Foundation
 
 struct APIKey {
-    static let apiKey = "f8e4e83c345276c7402bbca0c33c7280"
-    static let secret = "48c363c729860b95"
+    static var apiKey: String {
+        get {
+            // Get path from bundle
+            guard let filePath = Bundle.main.path(forResource: "Flickr-Photo", ofType: "Plist") else {
+              fatalError("Couldn't find file 'Flickr-Photo.plist'.")
+            }
+            // Get value from path
+            let plist = NSDictionary(contentsOfFile: filePath)
+            guard let value = plist?.object(forKey: "API_KEY") as? String else {
+              fatalError("Couldn't find key 'API_KEY' in 'Flickr-Photo.plist'.")
+            }
+            return value
+          }
+    }
 }

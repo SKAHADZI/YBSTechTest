@@ -14,8 +14,6 @@ struct TagBody: View {
             .padding()
             .background(Color.blue)
             .clipShape(.capsule)
-            .shadow(color: .black, radius: 4)
-        
     }
 }
 

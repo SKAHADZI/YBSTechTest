@@ -7,6 +7,7 @@
 
 import Combine
 import Foundation
+import os
 import UIKit
 
 protocol PhotoListViewModel {
@@ -26,7 +27,6 @@ final class PhotoListViewModelImpl: PhotoListViewModel, ObservableObject {
     @Published var images: [String: UIImage] = [:]
     @Published var photoInfo: [String: PhotoInfo] = [:]
     
-    private var isLoading = false
     private var hasLoaded = false
     private var lastUserID: String?
     
@@ -36,6 +36,8 @@ final class PhotoListViewModelImpl: PhotoListViewModel, ObservableObject {
     
     private var currentPage = 1
     private var isLastPage = false
+    
+    private let logger = Logger(subsystem: "com.SenSen.YBSTechTest", category: "networking")
     
     
     init(photoListService: PhotoListService = DIContainer.shared.resolve(PhotoListService.self) ?? PhotoListServiceImpl(),
@@ -50,31 +52,31 @@ final class PhotoListViewModelImpl: PhotoListViewModel, ObservableObject {
     
     func getPhotoSearch(userId: String?) {
         
-        guard !isLoading else { return }
-        state = .loading
+        guard !isLastPage else {
+                state = .success
+                return
+            }
         
-        if hasLoaded && userId == lastUserID {
-            return
-        }
+        state = .loading
                 
         photoListService.getPhotoList(userID: buildStringForUserID(userID: userId) ?? "" , page: currentPage)
             .sink { [weak self] completionResult in
                 guard let self = self else { return }
                 switch completionResult {
                 case .finished:
-                    self.state = .success
+                    break
                 case .failure(let error):
                     // Using the errorDescription
                     self.state = .failure(error)
                     self.errorMessage = error.localizedDescription
-                    print(error.errorDescription ?? "An unknown error occurred")
-                    
+                    logger.error("\(error.localizedDescription)")
                 }
             } receiveValue: { [weak self] photoObject in
                 guard let self = self else { return }
                 // Safely unwrap the new photos
                 guard let newPhotos = photoObject.photos.photo, !newPhotos.isEmpty else {
                     self.isLastPage = true
+                    self.state = .success
                     return
                 }
                 
@@ -83,7 +85,7 @@ final class PhotoListViewModelImpl: PhotoListViewModel, ObservableObject {
                 self.currentPage += 1
                 
                 // Load images and tags for the new photos
-                DispatchQueue.main.async {
+                DispatchQueue.global(qos: .background).async {
                     
                     newPhotos.forEach { photo in
                         self.loadImages(for: photo)
@@ -95,6 +97,12 @@ final class PhotoListViewModelImpl: PhotoListViewModel, ObservableObject {
             .store(in: &cancellables)
     }
     
+    func loadMorePhotos(userId: String?) {
+        if !isLastPage {
+            getPhotoSearch(userId: userId)
+        }
+    }
+    
     private func loadImages(for photo: Photo) {
         let photoID = photo.id
         
@@ -102,7 +110,7 @@ final class PhotoListViewModelImpl: PhotoListViewModel, ObservableObject {
         
         let imageURL = buildImageURL(photo: photo)
         
-        imageRequestService.downloadImage(url: imageURL)
+        imageRequestService.downloadImage(photoId: photo.id, url: imageURL)
             .receive(on: DispatchQueue.main)
             .sink { completionResult in
                 switch completionResult {
@@ -111,7 +119,8 @@ final class PhotoListViewModelImpl: PhotoListViewModel, ObservableObject {
                 case .failure(let error):
                     self.state = .failure(error)
                     self.images[photoID] = self.placeholderImage
-                    print("Error loading image for photo \(photoID): \(error.localizedDescription)")
+                    self.logger.error("Error loading image for photo \(photoID): \(error.localizedDescription)")
+                    self.errorMessage = error.localizedDescription
                 }
             } receiveValue: { [weak self] image in
                 DispatchQueue.main.async {
@@ -121,22 +130,16 @@ final class PhotoListViewModelImpl: PhotoListViewModel, ObservableObject {
             .store(in: &cancellables)
     }
     
-    func loadMorePhotos(userId: String?) {
-        if !isLastPage {
-            getPhotoSearch(userId: userId)
-        }
-    }
-    
     private func loadPhotoInfo(for photo: Photo) {
         tagService.getTags(for: photo)
             .receive(on: DispatchQueue.main)
             .sink { completionResult in
                 switch completionResult {
                 case .finished:
-                    print("Tags are here")
+                    self.logger.info("Tags are here")
                 case .failure(let error):
                     self.state = .failure(error)
-                    print("Error getting tags for photo \(photo.id): \(error.localizedDescription)")
+                    self.logger.error("Error getting tags for photo \(photo.id): \(error.localizedDescription)")
                     
                 }
             } receiveValue: { [weak self] tags in
@@ -163,13 +166,11 @@ extension PhotoListViewModelImpl {
         }
         return (photo, specificTag)
     }
+    
     // Come back and combine the two
     func getPhotoInfo(for photoID: String) -> PhotoInfo? {
-        // First, find the photo based on the photoID
-        guard let photo = photos.first(where: { $0.id == photoID }),
-              let photoTag = photoInfo[photoID] else { // Retrieve the full PhotoTag object from the photoInfo dictionary
-            return nil
-        }
+        
+        let photoTag = photoInfo[photoID]
         return photoTag // Return the entire PhotoTag object
     }
     

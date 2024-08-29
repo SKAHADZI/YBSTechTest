@@ -36,6 +36,7 @@ struct HomeView: View {
                             }
                         }
                     }
+                    .transition(.opacity)
                 case .failure(let error):
                     Text("An Error occured: \(error.localizedDescription)")
                 }
@@ -44,6 +45,7 @@ struct HomeView: View {
             .onAppear {
                 vm.getPhotoSearch(userId: userID)
             }
+            .transition(.opacity)
         }
         .navigationViewStyle(StackNavigationViewStyle())
     }

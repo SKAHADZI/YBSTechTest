@@ -16,21 +16,32 @@ struct PhotoHeaderView: View {
     
     var body: some View {
         HStack {
-            if let image = userDatavm.images {
-                Image(uiImage: image)
-                    .resizable()
-                    .frame(width: 30, height: 30)
-                    .cornerRadius(50)
-            } else {
+            switch userDatavm.state {
+            case .idle:
                 ProgressView()
-                    .frame(width: 30, height: 30)
-                    .cornerRadius(15)
-
+            case .loading:
+                ProgressView("Loading...")
+            case .success:
+                HStack {
+                    if let image = userDatavm.image {
+                        Image(uiImage: image)
+                            .resizable()
+                            .frame(width: 30, height: 30)
+                            .cornerRadius(50)
+                    } else {
+                        ProgressView()
+                            .frame(width: 30, height: 30)
+                            .cornerRadius(15)
+                        
+                    }
+                    Text(tag.authorname)
+                    
+                }
+                .frame(maxWidth: .infinity, alignment: .leading)
+            case .failure(let error):
+                Text("An Error occured: \(error.localizedDescription)")
             }
-            Text(tag.authorname)
-            
         }
-        .frame(maxWidth: .infinity, alignment: .leading)
         .onAppear {
             userDatavm.loadUserProfilePic(for: photo)
         }

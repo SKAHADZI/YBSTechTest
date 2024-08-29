@@ -14,26 +14,20 @@ enum NetworkingError: Error, Equatable {
     case invalidResponse
     case networkingError
     case decodingError
-    case invalidUsername
     case invalidURL
-    case unableToFavourite
     case unexpectedStatusCode(Int)
     case unknown
     
     var errorDescription: String? {
         switch self {
         case .invalidResponse:
-            return "Network error. Please check your internet connection."
+            return "Network error. We've had a bad response from the server, try again please.."
         case .networkingError:
             return "Network error. Please check your internet connection."
         case .decodingError:
             return "The data received from the server was invalid."
-        case .invalidUsername:
-            return "The username given is invalid. Please try again."
         case .invalidURL:
             return "The username given is invalid. Please try again."
-        case .unableToFavourite:
-            return "There was an error favouriting this user. Please Try again."
         case .unexpectedStatusCode(let statusCode):
             return "Unexpected status code \(statusCode)"
         case .unknown:

@@ -12,7 +12,9 @@ class CachingService {
     
     public static let shared = CachingService()
     let cache = NSCache<NSString, UIImage>()
-    private init() {}
+    private init() {
+        cache.totalCostLimit = 200 * 1024 * 1024 // 200 MB
+    }
     
     func getCachedImage(for key: String) -> UIImage? {
         return cache.object(forKey: key as NSString)

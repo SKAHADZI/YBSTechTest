@@ -6,12 +6,14 @@
 //
 
 import SwiftUI
+import UIKit
 
 struct UserPhotoGridView: View {
     
     let userID: String
     let authorName: String
     @StateObject private var vm = PhotoListViewModelImpl()
+    @State private var image: Image?
     
     let columns = [
         GridItem(.flexible(), spacing: 10),
@@ -21,30 +23,39 @@ struct UserPhotoGridView: View {
     
     var body: some View {
         ScrollView {
-            LazyVGrid(columns: columns, spacing: 10) {
-                ForEach(Array(vm.photos.enumerated()), id: \.element.id) { index, photo in
-                    if let image = vm.images[photo.id],
-                       let tag = vm.getPhotoWithTag(photoID: photo.id),
-                       let photoInfo = vm.getPhotoInfo(for: photo.id) {
-                        NavigationLink(destination: ImageDetailView(photo: photo, image: image, tag: tag.tag, photoInfo: photoInfo)) {
-                            Image(uiImage: image)
-                                .resizable()
-                                .aspectRatio(contentMode: .fill)
-                                .frame(width: UIScreen.main.bounds.width / 3 - 20, height: UIScreen.main.bounds.width / 3 - 20)
-                                .clipped()
-                                .cornerRadius(10)
-                        }
-                        .onAppear {
-                            if index == vm.photos.count - 1 {
-                                // Trigger loading more photos when the last item appears
-                                vm.loadMorePhotos(userId: userID)
+            switch vm.state {
+            case .idle:
+                Text("One moment....")
+            case .loading:
+                ProgressView("Loading...")
+            case .success:
+                LazyVGrid(columns: columns, spacing: 10) {
+                    ForEach(Array(vm.photos.enumerated()), id: \.element.id) { index, photo in
+                        if let image = vm.images[photo.id],
+                           let tag = vm.getPhotoWithTag(photoID: photo.id),
+                           let photoInfo = vm.getPhotoInfo(for: photo.id) {
+                            NavigationLink(destination: ImageDetailView(photo: photo, image: image, tag: tag.tag, photoInfo: photoInfo)) {
+                                Image(uiImage: image)
+                                    .resizable()
+                                    .aspectRatio(contentMode: .fill)
+                                    .frame(width: UIScreen.main.bounds.width / 3 - 20, height: UIScreen.main.bounds.width / 3 - 20)
+                                    .clipped()
+                                    .cornerRadius(10)
                             }
-                        }
+                            .onAppear {
+                                if index == vm.photos.count - 1 {
+                                    // Trigger loading more photos when the last item appears
+                                    vm.loadMorePhotos(userId: userID)
+                                }
+                            }
 
+                        }
                     }
                 }
+                .padding()
+            case .failure(let error):
+                Text(error.localizedDescription)
             }
-            .padding()
         }
         .navigationTitle("\(authorName)'s Photos")
         .onAppear {

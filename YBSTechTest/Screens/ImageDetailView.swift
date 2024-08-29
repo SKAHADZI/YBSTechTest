@@ -13,11 +13,11 @@ struct ImageDetailView: View {
     var image: UIImage
     var tag: Tag
     var photoInfo: PhotoInfo
-    
+
     var body: some View {
         ScrollView {
             HStack(alignment: .top) {
-                VStack() {
+                VStack(alignment: .leading) {
                     PhotoHeaderView(photo: photo, tag: tag)
                     Image(uiImage: image)
                         .resizable()
@@ -27,6 +27,7 @@ struct ImageDetailView: View {
                         .clipped()
                     Text(photo.title)
                         .font(.headline)
+                        .padding(.top, 8)
                     
                     if let formattedDate = photoInfo.photo.formattedDate {
                         Text(formattedDate)
@@ -36,11 +37,11 @@ struct ImageDetailView: View {
                     Text("Views: \(photoInfo.photo.views)")
                     
                     Text(photoInfo.photo.description._content)
-                        .font(.footnote)
-                        .multilineTextAlignment(.center)
+                        .font(.caption)
+                        .multilineTextAlignment(.leading)
                         .padding(.vertical, 8)
                     Spacer()
-                }.navigationTitle(photo.title)
+                }.navigationTitle(tag.authorname)
                 
                     .padding(.horizontal, 8)
                     .padding(.vertical, nil)
