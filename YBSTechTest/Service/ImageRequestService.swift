@@ -17,7 +17,6 @@ protocol ImageRequestService {
 class ImageRequestServiceImpl: ImageRequestService, ObservableObject {
     
     private let networkService: NetworkRepository
-    private let logger = Logger(subsystem: "com.SenSen.YBSTechTest", category: "networking")
 
     init(
         networkService: NetworkRepository = DIContainer.shared.resolve(NetworkRepository.self) ?? NetworkRepositoryImpl()
@@ -28,20 +27,20 @@ class ImageRequestServiceImpl: ImageRequestService, ObservableObject {
     func downloadImage(photoId: String, url: String) -> AnyPublisher<UIImage, NetworkingError> {
     
         guard let url = URL(string: url) else {
-            logger.error("Invalid URL: \(url, privacy: .sensitive) for photoId: \(photoId, privacy: .public)")
+            LoggingService.shared.error("Invalid URL: \(url, privacy: .sensitive) for photoId: \(photoId, privacy: .public)")
             return Fail(error: NetworkingError.invalidURL)
                 .eraseToAnyPublisher()
         }
 
         if let cachedImage = CachingService.shared.getCachedImage(for: photoId){
-            logger.info("Using cached image for URL: \(url), with id: \(photoId)")
+            LoggingService.shared.info("Using cached image for URL: \(url), with id: \(photoId)")
             return Just(cachedImage)
                 .setFailureType(to: NetworkingError.self)
                 .eraseToAnyPublisher()
         }
         
         if let diskImage = FileStoreManager.shared.retrieveFromDisk(for: photoId) {
-            logger.info("Using diskCache image for URL: \(url), with id: \(photoId)")
+            LoggingService.shared.info("Using diskCache image for URL: \(url), with id: \(photoId)")
             return Just(diskImage)
                 .setFailureType(to: NetworkingError.self)
                 .eraseToAnyPublisher()

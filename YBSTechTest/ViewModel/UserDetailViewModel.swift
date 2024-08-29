@@ -57,6 +57,9 @@ final class UserDataViewModelImpl: UserDetailViewModel, ObservableObject {
 extension UserDataViewModelImpl {
     
     private func buildImageURL(photo: Photo) -> String {
-        return "https://farm\(photo.farm).staticflickr.com/\(photo.server)/buddyicons/\(photo.owner).jpg"
+        guard let farm = photo.farm else { return "" }
+        guard let server = photo.server else { return "" }
+
+        return "https://farm\(farm).staticflickr.com/\(server)/buddyicons/\(photo.owner).jpg"
     }
 }

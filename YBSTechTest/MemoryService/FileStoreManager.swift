@@ -26,7 +26,7 @@ final class FileStoreManager {
             
             try data?.write(to: fileUrl)
         } catch {
-            logger.error("failed to save to disk")
+            LoggingService.shared.error("failed to save to disk")
         }
     }
     
@@ -36,7 +36,7 @@ final class FileStoreManager {
         let fileUrl = cacheFolder.appendingPathComponent(key)
         
         guard fileManager.fileExists(atPath: fileUrl.path) else {
-            logger.info("No disk image found at: \(fileUrl.path, privacy: .public)")
+            LoggingService.shared.info("No disk image found at: \(fileUrl.path, privacy: .public)")
             return nil
         }
         
@@ -44,7 +44,7 @@ final class FileStoreManager {
             let data = try Data(contentsOf: fileUrl)
             return UIImage(data: data)
         } catch {
-            logger.error("Failed to retrieve image from disk")
+            LoggingService.shared.error("Failed to retrieve image from disk")
             return nil
         }
     }
@@ -58,12 +58,12 @@ final class FileStoreManager {
         if fileManager.fileExists(atPath: fileUrl.path) {
             do {
                 try fileManager.removeItem(at: fileUrl)
-                logger.info("File removed successfully at: \(fileUrl.path)")
+                LoggingService.shared.info("File removed successfully at: \(fileUrl.path)")
             } catch {
-                logger.error("Failed to remove file: \(error.localizedDescription)")
+                LoggingService.shared.error("Failed to remove file: \(error.localizedDescription)")
             }
         } else {
-            logger.info("No file exists at: \(fileUrl.path)")
+            LoggingService.shared.info("No file exists at: \(fileUrl.path)")
         }
     }
 }

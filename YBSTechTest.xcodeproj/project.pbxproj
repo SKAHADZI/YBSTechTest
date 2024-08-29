@@ -23,6 +23,9 @@
 		A75671812C8104CA00FF982F /* MockPhotoListService.swift in Sources */ = {isa = PBXBuildFile; fileRef = A75671802C8104CA00FF982F /* MockPhotoListService.swift */; };
 		A75671832C81068200FF982F /* MockNetWorkRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = A75671822C81068200FF982F /* MockNetWorkRepository.swift */; };
 		A75671852C81127800FF982F /* Flickr-Photo.Plist in Resources */ = {isa = PBXBuildFile; fileRef = A75671842C81127800FF982F /* Flickr-Photo.Plist */; };
+		A756718B2C811CBF00FF982F /* MockTagListService.swift in Sources */ = {isa = PBXBuildFile; fileRef = A756718A2C811CBF00FF982F /* MockTagListService.swift */; };
+		A75671902C8123AA00FF982F /* LoggingService.swift in Sources */ = {isa = PBXBuildFile; fileRef = A756718F2C8123AA00FF982F /* LoggingService.swift */; };
+		A756719A2C8136D500FF982F /* UserDetailService.swift in Sources */ = {isa = PBXBuildFile; fileRef = A75671992C8136D500FF982F /* UserDetailService.swift */; };
 		A7574B272C7CFE39003C75EF /* YBSTechTestApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7574B262C7CFE39003C75EF /* YBSTechTestApp.swift */; };
 		A7574B292C7CFE39003C75EF /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7574B282C7CFE39003C75EF /* HomeView.swift */; };
 		A7574B2B2C7CFE3A003C75EF /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A7574B2A2C7CFE3A003C75EF /* Assets.xcassets */; };
@@ -77,6 +80,9 @@
 		A75671802C8104CA00FF982F /* MockPhotoListService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockPhotoListService.swift; sourceTree = "<group>"; };
 		A75671822C81068200FF982F /* MockNetWorkRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockNetWorkRepository.swift; sourceTree = "<group>"; };
 		A75671842C81127800FF982F /* Flickr-Photo.Plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Flickr-Photo.Plist"; sourceTree = "<group>"; };
+		A756718A2C811CBF00FF982F /* MockTagListService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockTagListService.swift; sourceTree = "<group>"; };
+		A756718F2C8123AA00FF982F /* LoggingService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoggingService.swift; sourceTree = "<group>"; };
+		A75671992C8136D500FF982F /* UserDetailService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDetailService.swift; sourceTree = "<group>"; };
 		A7574B232C7CFE39003C75EF /* YBSTechTest.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = YBSTechTest.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		A7574B262C7CFE39003C75EF /* YBSTechTestApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = YBSTechTestApp.swift; sourceTree = "<group>"; };
 		A7574B282C7CFE39003C75EF /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
@@ -176,8 +182,17 @@
 			children = (
 				A75671802C8104CA00FF982F /* MockPhotoListService.swift */,
 				A75671822C81068200FF982F /* MockNetWorkRepository.swift */,
+				A756718A2C811CBF00FF982F /* MockTagListService.swift */,
 			);
 			path = Mocks;
+			sourceTree = "<group>";
+		};
+		A756718E2C81239F00FF982F /* Logging */ = {
+			isa = PBXGroup;
+			children = (
+				A756718F2C8123AA00FF982F /* LoggingService.swift */,
+			);
+			path = Logging;
 			sourceTree = "<group>";
 		};
 		A7574B1A2C7CFE39003C75EF = {
@@ -204,8 +219,9 @@
 		A7574B252C7CFE39003C75EF /* YBSTechTest */ = {
 			isa = PBXGroup;
 			children = (
-				A756717F2C8104B000FF982F /* Mocks */,
 				A7574B262C7CFE39003C75EF /* YBSTechTestApp.swift */,
+				A756718E2C81239F00FF982F /* Logging */,
+				A756717F2C8104B000FF982F /* Mocks */,
 				A756717C2C80CEDC00FF982F /* MemoryService */,
 				A75671772C7FEF4B00FF982F /* State */,
 				A7574B6B2C7D0E09003C75EF /* ViewModel */,
@@ -257,6 +273,7 @@
 				A7574B552C7D0036003C75EF /* ImageRequestService.swift */,
 				A756715E2C7E585100FF982F /* TagListService.swift */,
 				A756716C2C7E77F500FF982F /* UserProfileImageService.swift */,
+				A75671992C8136D500FF982F /* UserDetailService.swift */,
 			);
 			path = Service;
 			sourceTree = "<group>";
@@ -463,8 +480,11 @@
 				A756715D2C7E56C500FF982F /* ImageDetailView.swift in Sources */,
 				A7574B652C7D06BB003C75EF /* DIContainer.swift in Sources */,
 				A75671792C7FEF5500FF982F /* ViewState.swift in Sources */,
+				A75671902C8123AA00FF982F /* LoggingService.swift in Sources */,
+				A756719A2C8136D500FF982F /* UserDetailService.swift in Sources */,
 				A756715B2C7E56BD00FF982F /* PhotoHeaderView.swift in Sources */,
 				A7574B602C7D031B003C75EF /* APIKey.swift in Sources */,
+				A756718B2C811CBF00FF982F /* MockTagListService.swift in Sources */,
 				A7574B5A2C7D00A0003C75EF /* NetworkingError.swift in Sources */,
 				A7574B622C7D0634003C75EF /* BaseUrl.swift in Sources */,
 				A75671632C7E61E300FF982F /* UserHeaderView.swift in Sources */,

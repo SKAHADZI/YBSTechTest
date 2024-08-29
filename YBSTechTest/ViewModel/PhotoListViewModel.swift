@@ -79,7 +79,7 @@ final class PhotoListViewModelImpl: PhotoListViewModel, ObservableObject {
                     self.state = .success
                     return
                 }
-                
+                print(photoObject)
                 // Append new photos to the existing photos array
                 self.photos.append(contentsOf: newPhotos)
                 self.currentPage += 1
@@ -183,6 +183,7 @@ extension PhotoListViewModelImpl {
     }
     
     private func buildImageURL(photo: Photo) -> String {
-        return "\(BaseUrl.photosUrl)\(photo.server)/\(photo.id)_\(photo.secret).jpg"
+        guard let server = photo.server else { return "" }
+        return "\(BaseUrl.photosUrl)\(server)/\(photo.id)_\(photo.secret).jpg"
     }
 }

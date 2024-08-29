@@ -41,13 +41,13 @@ class DecodingErrorHandler {
         if let decodingError = error as? DecodingError {
             switch decodingError {
             case .typeMismatch(let type, let context):
-                print("Type mismatch: \(type) at \(context.codingPath.map { $0.stringValue }.joined(separator: " -> ")) - \(context.debugDescription)")
+                LoggingService.shared.error("Type mismatch: \(type) at \(context.codingPath.map { $0.stringValue }.joined(separator: " -> ")) - \(context.debugDescription)")
             case .valueNotFound(let type, let context):
-                print("Value of type '\(type)' not found at \(context.codingPath.map { $0.stringValue }.joined(separator: " -> ")) - \(context.debugDescription)")
+                LoggingService.shared.error("Value of type '\(type)' not found at \(context.codingPath.map { $0.stringValue }.joined(separator: " -> ")) - \(context.debugDescription)")
             case .keyNotFound(let key, let context):
-                print("Key '\(key.stringValue)' not found at \(context.codingPath.map { $0.stringValue }.joined(separator: " -> ")) - \(context.debugDescription)")
+                LoggingService.shared.error("Key '\(key.stringValue)' not found at \(context.codingPath.map { $0.stringValue }.joined(separator: " -> ")) - \(context.debugDescription)")
             case .dataCorrupted(let context):
-                print("Data corrupted at \(context.codingPath.map { $0.stringValue }.joined(separator: " -> ")) - \(context.debugDescription)")
+                LoggingService.shared.error("Data corrupted at \(context.codingPath.map { $0.stringValue }.joined(separator: " -> ")) - \(context.debugDescription)")
             @unknown default:
                 print("Unknown decoding error")
             }

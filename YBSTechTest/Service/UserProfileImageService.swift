@@ -17,10 +17,8 @@ class UserProfileImageServiceImpl: UserProfileImageService, ObservableObject {
     
     private let networkService: NetworkRepository
     
-    
     init(
         networkService: NetworkRepository = DIContainer.shared.resolve(NetworkRepository.self) ?? NetworkRepositoryImpl()
-        
     ){
         self.networkService = networkService
     }
@@ -31,19 +29,18 @@ class UserProfileImageServiceImpl: UserProfileImageService, ObservableObject {
             return Fail(error: NetworkingError.invalidURL)
                 .eraseToAnyPublisher()
         }
-#warning("Dont forget to store on disk")
-#warning("Images not pulling from cache")
+
         if let cachedImage = CachingService.shared.getCachedImage(for: photoId) {
-            print("Using cached image for URL: \(url)")
+            LoggingService.shared.info("Using cached image for URL: \(url)")
             return Just(cachedImage)
                 .setFailureType(to: NetworkingError.self)
                 .eraseToAnyPublisher()
         }else {
-            print("No cached image found for URL: \(url.absoluteString)")
+            LoggingService.shared.error("No cached image found for URL: \(url.absoluteString)")
         }
         
         if let diskImage = FileStoreManager.shared.retrieveFromDisk(for: photoId) {
-            print("Using Disk image for URL: \(url), with id: \(photoId)")
+            LoggingService.shared.info("Using Disk image for URL: \(url), with id: \(photoId)")
             return Just(diskImage)
                 .setFailureType(to: NetworkingError.self)
                 .eraseToAnyPublisher()
@@ -60,7 +57,7 @@ class UserProfileImageServiceImpl: UserProfileImageService, ObservableObject {
                     throw(NetworkingError.invalidResponse)
                 }
                 CachingService.shared.cacheImage(image, for: photoId)
-                print("Adding image to disk for URL: \(url), with id: \(photoId)")
+                LoggingService.shared.info("Adding image to disk for URL: \(url), with id: \(photoId)")
                 FileStoreManager.shared.addToDisk(image: image, for: photoId)
                 return image
             }
