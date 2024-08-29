@@ -18,6 +18,8 @@
 		A756716D2C7E77F500FF982F /* UserProfileImageService.swift in Sources */ = {isa = PBXBuildFile; fileRef = A756716C2C7E77F500FF982F /* UserProfileImageService.swift */; };
 		A756716F2C7E922500FF982F /* TagBody.swift in Sources */ = {isa = PBXBuildFile; fileRef = A756716E2C7E922500FF982F /* TagBody.swift */; };
 		A75671742C7FB8EE00FF982F /* PhotoCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A75671732C7FB8EE00FF982F /* PhotoCardView.swift */; };
+		A75671792C7FEF5500FF982F /* ViewState.swift in Sources */ = {isa = PBXBuildFile; fileRef = A75671782C7FEF5500FF982F /* ViewState.swift */; };
+		A756717B2C80BDAD00FF982F /* UserPhotoGridView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A756717A2C80BDAD00FF982F /* UserPhotoGridView.swift */; };
 		A7574B272C7CFE39003C75EF /* YBSTechTestApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7574B262C7CFE39003C75EF /* YBSTechTestApp.swift */; };
 		A7574B292C7CFE39003C75EF /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7574B282C7CFE39003C75EF /* HomeView.swift */; };
 		A7574B2B2C7CFE3A003C75EF /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A7574B2A2C7CFE3A003C75EF /* Assets.xcassets */; };
@@ -67,6 +69,8 @@
 		A756716C2C7E77F500FF982F /* UserProfileImageService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserProfileImageService.swift; sourceTree = "<group>"; };
 		A756716E2C7E922500FF982F /* TagBody.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TagBody.swift; sourceTree = "<group>"; };
 		A75671732C7FB8EE00FF982F /* PhotoCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoCardView.swift; sourceTree = "<group>"; };
+		A75671782C7FEF5500FF982F /* ViewState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewState.swift; sourceTree = "<group>"; };
+		A756717A2C80BDAD00FF982F /* UserPhotoGridView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserPhotoGridView.swift; sourceTree = "<group>"; };
 		A7574B232C7CFE39003C75EF /* YBSTechTest.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = YBSTechTest.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		A7574B262C7CFE39003C75EF /* YBSTechTestApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = YBSTechTestApp.swift; sourceTree = "<group>"; };
 		A7574B282C7CFE39003C75EF /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
@@ -122,6 +126,7 @@
 				A756715A2C7E56BD00FF982F /* PhotoHeaderView.swift */,
 				A756715C2C7E56C500FF982F /* ImageDetailView.swift */,
 				A756716E2C7E922500FF982F /* TagBody.swift */,
+				A756717A2C80BDAD00FF982F /* UserPhotoGridView.swift */,
 			);
 			path = Screens;
 			sourceTree = "<group>";
@@ -141,6 +146,14 @@
 			);
 			name = Views;
 			path = Screens/Views;
+			sourceTree = "<group>";
+		};
+		A75671772C7FEF4B00FF982F /* State */ = {
+			isa = PBXGroup;
+			children = (
+				A75671782C7FEF5500FF982F /* ViewState.swift */,
+			);
+			path = State;
 			sourceTree = "<group>";
 		};
 		A7574B1A2C7CFE39003C75EF = {
@@ -166,6 +179,7 @@
 		A7574B252C7CFE39003C75EF /* YBSTechTest */ = {
 			isa = PBXGroup;
 			children = (
+				A75671772C7FEF4B00FF982F /* State */,
 				A7574B702C7D1F19003C75EF /* Extensions */,
 				A7574B6B2C7D0E09003C75EF /* ViewModel */,
 				A7574B662C7D0701003C75EF /* DependencyManager */,
@@ -424,9 +438,11 @@
 				A7574B542C7D0026003C75EF /* PhotoListService.swift in Sources */,
 				A756716F2C7E922500FF982F /* TagBody.swift in Sources */,
 				A756716D2C7E77F500FF982F /* UserProfileImageService.swift in Sources */,
+				A756717B2C80BDAD00FF982F /* UserPhotoGridView.swift in Sources */,
 				A756715F2C7E585100FF982F /* TagListService.swift in Sources */,
 				A756715D2C7E56C500FF982F /* ImageDetailView.swift in Sources */,
 				A7574B652C7D06BB003C75EF /* DIContainer.swift in Sources */,
+				A75671792C7FEF5500FF982F /* ViewState.swift in Sources */,
 				A756715B2C7E56BD00FF982F /* PhotoHeaderView.swift in Sources */,
 				A7574B602C7D031B003C75EF /* APIKey.swift in Sources */,
 				A7574B5A2C7D00A0003C75EF /* NetworkingError.swift in Sources */,

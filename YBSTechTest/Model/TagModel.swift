@@ -22,13 +22,13 @@ struct PhotoModel: Codable {
     let description: Content
     let views: String
     
-//    var formattedDate: String? {
-//        guard let dateDouble = Double(dateuploaded) else { return nil }
-//        let uploadedDate = Date(timeIntervalSince1970: dateDouble)
-//        let formatter = DateFormatter()
-//            formatter.dateFormat = "d MMM y"
-//        return formatter.string(from: uploadedDate)
-//        }
+    var formattedDate: String? {
+        guard let dateDouble = Double(dateuploaded) else { return nil }
+        let uploadedDate = Date(timeIntervalSince1970: dateDouble)
+        let formatter = DateFormatter()
+            formatter.dateFormat = "d MMM y"
+        return formatter.string(from: uploadedDate)
+        }
 }
 
 struct Content: Codable {

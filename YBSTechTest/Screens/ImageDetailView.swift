@@ -15,32 +15,36 @@ struct ImageDetailView: View {
     var photoInfo: PhotoInfo
     
     var body: some View {
-        HStack(alignment: .top) {
-            VStack() {
-                PhotoHeaderView(photo: photo, tag: tag)
-                Image(uiImage: image)
-                    .resizable()
-                    .scaledToFill()
-                    .aspectRatio(contentMode: .fit)
-                    .cornerRadius(10)
-                    .clipped()
-                Text(photo.title)
-                    .font(.headline)
-//                if let formattedDate = photoInfo.photo.formattedDate {
-//                    Text(formattedDate)
-//                        .font(.subheadline)
-//                }
-                Text("Views: \(photoInfo.photo.views)")
+        ScrollView {
+            HStack(alignment: .top) {
+                VStack() {
+                    PhotoHeaderView(photo: photo, tag: tag)
+                    Image(uiImage: image)
+                        .resizable()
+                        .scaledToFill()
+                        .aspectRatio(contentMode: .fit)
+                        .cornerRadius(10)
+                        .clipped()
+                    Text(photo.title)
+                        .font(.headline)
+                    
+                    if let formattedDate = photoInfo.photo.formattedDate {
+                        Text(formattedDate)
+                            .font(.subheadline)
+                    }
+                    
+                    Text("Views: \(photoInfo.photo.views)")
+                    
+                    Text(photoInfo.photo.description._content)
+                        .font(.footnote)
+                        .multilineTextAlignment(.center)
+                        .padding(.vertical, 8)
+                    Spacer()
+                }.navigationTitle(photo.title)
                 
-                Text(photoInfo.photo.description._content)
-                    .font(.footnote)
-                    .multilineTextAlignment(.center)
-                    .padding(.vertical, 8)
-                Spacer()
-            }.navigationTitle(photo.title)
-            
-            .padding(.horizontal, 8)
-            .padding(.vertical, nil)
+                    .padding(.horizontal, 8)
+                    .padding(.vertical, nil)
+            }
         }
     }
 }

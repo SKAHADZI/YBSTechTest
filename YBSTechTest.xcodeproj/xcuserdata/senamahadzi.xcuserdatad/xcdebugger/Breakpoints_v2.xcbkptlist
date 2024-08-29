@@ -39,22 +39,6 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            uuid = "308533A5-3AD1-4BAA-BEB9-D9B2D8150B9A"
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "YBSTechTest/ViewModel/PhotoListViewModel.swift"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "60"
-            endingLineNumber = "60"
-            landmarkName = "getPhotoSearch(userId:)"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
             uuid = "8CD03CD3-AFEA-4EE9-B430-9266431D360F"
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
@@ -71,47 +55,17 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            uuid = "95681774-8D7C-4CB3-A1E1-94D13A6400DD"
+            uuid = "977F35E9-C6B6-49AE-8449-200EF0476EEA"
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "YBSTechTest/Service/PhotoListService.swift"
+            filePath = "YBSTechTest/ViewModel/PhotoListViewModel.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "25"
-            endingLineNumber = "25"
-            landmarkName = "getPhotoList(userID:page:)"
+            startingLineNumber = "60"
+            endingLineNumber = "60"
+            landmarkName = "getPhotoSearch(userId:)"
             landmarkType = "7">
-            <Locations>
-               <Location
-                  uuid = "95681774-8D7C-4CB3-A1E1-94D13A6400DD - 2004d236a0cf24cb"
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "default argument 0 of YBSTechTest.PhotoListServiceImpl.getPhotoList(userID: Swift.String, page: Swift.Int) -&gt; Combine.AnyPublisher&lt;YBSTechTest.PhotoObject, YBSTechTest.NetworkingError&gt;"
-                  moduleName = "YBSTechTest"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/senamahadzi/Desktop/Development/YBSTechTest/YBSTechTest/Service/PhotoListService.swift"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "25"
-                  endingLineNumber = "25">
-               </Location>
-               <Location
-                  uuid = "95681774-8D7C-4CB3-A1E1-94D13A6400DD - 593b290b7a5cca0a"
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "YBSTechTest.PhotoListServiceImpl.getPhotoList(userID: Swift.String, page: Swift.Int) -&gt; Combine.AnyPublisher&lt;YBSTechTest.PhotoObject, YBSTechTest.NetworkingError&gt;"
-                  moduleName = "YBSTechTest"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/senamahadzi/Desktop/Development/YBSTechTest/YBSTechTest/Service/PhotoListService.swift"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "25"
-                  endingLineNumber = "25">
-               </Location>
-            </Locations>
          </BreakpointContent>
       </BreakpointProxy>
    </Breakpoints>
