@@ -11,6 +11,8 @@ struct ProfileDetailHeaderView: View {
     
     var photo: PhotoResponse
     var photoInfo: PhotoInfo
+    let router: AppRouter
+
     @StateObject private var userDataVm = UserDataViewModelImpl()
 
     var body: some View {
@@ -41,6 +43,6 @@ struct ProfileDetailHeaderView: View {
        }
 }
 
-//#Preview {
-//    ProfileDetailHeaderView()
-//}
+#Preview {
+    ProfileDetailHeaderView(photo: Mocks.samplePhotoResponse, photoInfo: Mocks.samplePhotoInfo, router: AppRouter())
+}

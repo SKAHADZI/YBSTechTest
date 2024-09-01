@@ -14,6 +14,7 @@ struct UserPhotoGridView: View {
     let authorName: String
     var userPhotoInfo: PhotoInfo
     var photo: PhotoResponse
+    let router: AppRouter
     
     @StateObject private var vm = PhotoListViewModelImpl()
     
@@ -26,12 +27,15 @@ struct UserPhotoGridView: View {
     var body: some View {
         ScrollView {
             VStack {
-                ProfileDetailHeaderView(photo: photo, photoInfo: userPhotoInfo)
+                ProfileDetailHeaderView(photo: photo, photoInfo: userPhotoInfo, router: router)
                 LazyVGrid(columns: columns, spacing: 10) {
                     ForEach(Array(vm.photos.enumerated()), id: \.element.id) { index, photo in
                         if let image = vm.images[photo.id],
                            let photoInfo = vm.getPhotoInfo(for: photo.id) {
-                            NavigationLink(destination: ImageDetailView(photo: photo, image: image, photoInfo: photoInfo)) {
+                            
+                            NavigationLink {
+                                router.navigate(to: .imageDetail(photo: photo, image: image, photoInfo: photoInfo))
+                            } label: {
                                 Image(uiImage: image)
                                     .resizable()
                                     .aspectRatio(contentMode: .fill)
@@ -39,6 +43,8 @@ struct UserPhotoGridView: View {
                                     .clipped()
                                     .cornerRadius(10)
                             }
+                            .padding(.vertical, 8)
+
                             .onAppear {
                                 if index == vm.photos.count - 1 {
                                     // Trigger loading more photos when the last item appears
@@ -58,7 +64,7 @@ struct UserPhotoGridView: View {
                 ProgressView("Loading...")
             case .success:
                 EmptyView()
-            case .failure(let error):
+            case .failure:
                 if let errorMessage = vm.errorMessage {
                     Text("\(errorMessage)")
                 }
@@ -68,13 +74,14 @@ struct UserPhotoGridView: View {
                 EmptyView()
             }
         }
-        .navigationTitle("\(authorName)'s Photos")
+        .navigationTitle("\(authorName)'s Photos")  .navigationBarBackButtonHidden(false) 
+
         .onAppear {
             vm.getPhotoSearch(userId: userID)
         }
     }
 }
 
-//#Preview {
-//    UserPhotoGridView(userID: "12345", authorName: "Sample Author", userPhotoInfo: PhotoInfo(photo: PhotoModel(id: <#T##String?#>, tags: <#T##Tags?#>, server: <#T##String?#>, farm: <#T##Int?#>, dateuploaded: <#T##String#>, owner: <#T##Owner#>, title: <#T##Content#>, description: <#T##Content#>, views: <#T##String#>)), photo: <#Photo#>)
-//}
+#Preview {
+    UserPhotoGridView(userID: "687089798789", authorName: "ArthurKnight", userPhotoInfo: Mocks.samplePhotoInfo, photo: Mocks.samplePhotoResponse, router: AppRouter())
+}

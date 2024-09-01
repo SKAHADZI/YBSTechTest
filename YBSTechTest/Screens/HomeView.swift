@@ -2,25 +2,24 @@ import SwiftUI
 
 struct HomeView: View {
     
-    @StateObject var vm = PhotoListViewModelImpl()
+    @EnvironmentObject var vm: PhotoListViewModelImpl
     var userID: String?
     var authorName: String?
     @State private var isSheetPresented = false
     @State private var selectedUserID: String?
     @State private var selectedAuthorName: String?
+    @ObservedObject var router: AppRouter
     
     var body: some View {
-        NavigationStack {
             ScrollView {
                 LazyVStack(alignment: .leading, spacing: 0) {
                     ForEach(Array(vm.photos.enumerated()), id: \.0) { index, photo in
-                        let _ = print("index = \(index)")
                         let photoInfo = vm.getPhotoInfo(for: photo.id)
                         
                         if let image = vm.images[photo.id],
                            let photo = vm.photos.first(where: { $0.id == photo.id })
                         {
-                            PhotoCardView(photo: photo, image: image, photoInfo: photoInfo ?? nil, photoID: photo.id)
+                            PhotoCardView(photo: photo, image: image, photoInfo: photoInfo ?? nil, photoID: photo.id, router: router)
                                 .onAppear {
                                     if index == vm.photos.count - 1 {
                                         vm.loadMorePhotos( userId: userID)
@@ -29,6 +28,7 @@ struct HomeView: View {
                         }
                     }
                 }
+                
                 switch vm.viewState {
                 case .idle:
                     EmptyView()
@@ -51,13 +51,10 @@ struct HomeView: View {
                 if !vm.dataLoaded {
                     vm.getPhotoSearch(userId: userID)
                 }
-                
             }
-        }
-        .navigationViewStyle(StackNavigationViewStyle())
     }
 }
 
 #Preview {
-    HomeView()
+    HomeView(router: AppRouter())
 }

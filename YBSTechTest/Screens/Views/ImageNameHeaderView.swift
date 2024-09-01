@@ -61,6 +61,6 @@ struct ImageNameHeaderView: View {
     }
 }
 
-//#Preview {
-//    PhotoHeaderView(photo: Photo(id: "", owner: "", farm: 99, secret: "", server: "", title: ""), tag: Tag(id: "", author: "", authorname: "Senam Ahadzi", raw: ""))
-//}
+#Preview {
+    ImageNameHeaderView(photo: Mocks.samplePhotoResponse, photoInfo: Mocks.samplePhotoInfo)
+}

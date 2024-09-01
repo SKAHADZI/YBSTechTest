@@ -23,10 +23,26 @@ struct YBSTechTestApp: App {
         
         UILabel.appearance(whenContainedInInstancesOf: [UINavigationBar.self]).adjustsFontSizeToFitWidth = true
     }
+    
     var body: some Scene {
         WindowGroup {
-            HomeView()
-                .environmentObject(photoSearchVm)
+            NavigationStack() {
+                AppRouterView()
+                    .environmentObject(photoSearchVm)
+
+            }.navigationBarBackButtonHidden(false)
         }
+    }
+}
+
+struct AppRouterView: View {
+    @StateObject var router = AppRouter()
+    @StateObject var photoListViewModel = PhotoListViewModelImpl()
+
+    var body: some View {
+        NavigationStack() {
+            HomeView(router: router)
+        }
+        .environmentObject(photoListViewModel)
     }
 }

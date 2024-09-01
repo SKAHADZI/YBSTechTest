@@ -104,11 +104,7 @@ final class PhotoListViewModelImpl: PhotoListViewModel, ObservableObject {
     }
     
     func loadMorePhotos(userId: String?) {
-        print("loadMorePhotos called")
-           guard viewState != .loading && viewState != .isLoadingMore && !isLastPage else {
-               print("Pagination stopped: \(viewState) or no more pages.")
-               return
-           }
+           guard viewState != .loading && viewState != .isLoadingMore && !isLastPage else { return }
            getPhotoSearch(userId: userId)
     }
     

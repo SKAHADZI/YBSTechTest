@@ -58,7 +58,6 @@ extension UserDataViewModelImpl {
     private func buildImageURL(photo: PhotoResponse) -> String {
         guard let farm = photo.farm else { return "" }
         guard let server = photo.server else { return "" }
-        print("buildImageURL: \(photo)")
         return "https://farm\(farm).staticflickr.com/\(server)/buddyicons/\(photo.owner).jpg"
     }
 }

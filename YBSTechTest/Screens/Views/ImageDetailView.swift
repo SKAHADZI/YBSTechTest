@@ -12,9 +12,11 @@ struct ImageDetailView: View {
     var photo: PhotoResponse
     var image: UIImage
     var photoInfo: PhotoInfo
+    let router: AppRouter
     
     @EnvironmentObject var vm: PhotoListViewModelImpl
-
+    @Environment(\.dismiss) var dismiss
+    
     var body: some View {
         ScrollView {
             HStack(alignment: .top) {
@@ -43,14 +45,15 @@ struct ImageDetailView: View {
                         .padding(.vertical, 8)
                     Spacer()
                 }.navigationTitle(photoInfo.photo.owner.username)
-                
                     .padding(.horizontal, 8)
                     .padding(.vertical, nil)
             }
         }
+        .navigationBarBackButtonHidden(false)
+        
     }
 }
 
-//#Preview {
-//    ImageDetailView(photo: Photo(id: "", owner: "", farm: 66, secret: "", server: "", title: ""), image: UIImage(), tag: Tag(id: "", author: "", authorname: "", raw: ""), photoInfo: PhotoTag(id: "", tags: Tags[(id: "", author: "", authorname: "", raw: "")], server: "", farm: 99, dateuploaded: "", owner: Owner(username: "", realName: "", location: "", iconServer: "", iconFram: 99, path_alias: ""), title: "", description: "", views: ""))
-//}
+#Preview {
+    ImageDetailView(photo: Mocks.samplePhotoResponse, image: UIImage(resource: .personPlaceholder), photoInfo: Mocks.samplePhotoInfo, router: AppRouter())
+}

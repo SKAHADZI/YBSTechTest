@@ -19,7 +19,7 @@ struct PhotosResponse: Codable {
     let photo: [PhotoResponse]?
 }
 
-struct PhotoResponse: Codable {
+struct PhotoResponse: Codable, Hashable {
     let uuid = UUID()
     let id: String
     let owner: String

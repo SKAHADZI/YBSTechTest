@@ -7,11 +7,11 @@
 
 import Foundation
 
-struct PhotoInfo: Codable {
+struct PhotoInfo: Codable, Hashable, Equatable {
     let photo: PhotoModel
 }
 
-struct PhotoModel: Codable {
+struct PhotoModel: Codable, Hashable, Equatable {
     let id: String?
     let tags: Tags?
     let server: String?
@@ -31,11 +31,11 @@ struct PhotoModel: Codable {
         }
 }
 
-struct Content: Codable {
+struct Content: Codable, Hashable, Equatable {
     let _content: String
 }
 
-struct Owner: Codable {
+struct Owner: Codable, Hashable, Equatable {
     let nsid: String
     let username: String
     let realname: String
@@ -45,11 +45,11 @@ struct Owner: Codable {
     let path_alias: String?
 }
 
-struct Tags: Codable {
+struct Tags: Codable, Hashable, Equatable {
     let tag: [Tag]
 }
 
-struct Tag: Codable {
+struct Tag: Codable, Hashable, Equatable {
     let id: String
     let author: String
     let authorname: String 
