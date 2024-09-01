@@ -7,12 +7,12 @@
 
 import SwiftUI
 
-struct PhotoHeaderView: View {
+struct ImageNameHeaderView: View {
     
     @StateObject var userDatavm = UserDataViewModelImpl()
     
     var photo: Photo
-    var tag: Tag
+    var photoInfo: PhotoInfo
     
     var body: some View {
         HStack {
@@ -23,7 +23,7 @@ struct PhotoHeaderView: View {
                 ProgressView("Loading...")
             case .success:
                 HStack {
-                    if let image = userDatavm.image {
+                    if let image = userDatavm.profileImage {
                         Image(uiImage: image)
                             .resizable()
                             .frame(width: 30, height: 30)
@@ -34,12 +34,25 @@ struct PhotoHeaderView: View {
                             .cornerRadius(15)
                         
                     }
-                    Text(tag.authorname)
+                    Text(photoInfo.photo.owner.username)
                     
                 }
                 .frame(maxWidth: .infinity, alignment: .leading)
             case .failure(let error):
-                Text("An Error occured: \(error.localizedDescription)")
+                HStack {
+                    if let image = userDatavm.profileImage {
+                        Image(uiImage: image)
+                            .resizable()
+                            .frame(width: 30, height: 30)
+                            .cornerRadius(50)
+                    }
+                    Text(photoInfo.photo.owner.username)
+                }
+            case .isLoadingMore:
+                EmptyView()
+            case .loadedAll:
+                EmptyView()
+
             }
         }
         .onAppear {
@@ -48,6 +61,6 @@ struct PhotoHeaderView: View {
     }
 }
 
-#Preview {
-    PhotoHeaderView(photo: Photo(id: "", owner: "", farm: 99, secret: "", server: "", title: ""), tag: Tag(id: "", author: "", authorname: "Senam Ahadzi", raw: ""))
-}
+//#Preview {
+//    PhotoHeaderView(photo: Photo(id: "", owner: "", farm: 99, secret: "", server: "", title: ""), tag: Tag(id: "", author: "", authorname: "Senam Ahadzi", raw: ""))
+//}

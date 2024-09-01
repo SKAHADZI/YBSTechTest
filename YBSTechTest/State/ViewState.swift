@@ -7,9 +7,11 @@
 
 import Foundation
 
-enum ViewState {
+enum ViewState: Equatable {
     case idle
     case loading
     case success
-    case failure(Error)
+    case isLoadingMore
+    case loadedAll
+    case failure(NetworkingError)
 }

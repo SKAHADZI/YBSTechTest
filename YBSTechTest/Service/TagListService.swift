@@ -29,6 +29,7 @@ class TagListServiceImpl: TagListService, ObservableObject {
             return Fail(error: NetworkingError.invalidURL)
                 .eraseToAnyPublisher()
         }
+        print(url)
         
         let decoder = JSONDecoder()
         decoder.dateDecodingStrategy = .secondsSince1970

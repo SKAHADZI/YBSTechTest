@@ -12,8 +12,10 @@ struct UserPhotoGridView: View {
     
     let userID: String
     let authorName: String
+    var userPhotoInfo: PhotoInfo
+    var photo: Photo
+    
     @StateObject private var vm = PhotoListViewModelImpl()
-    @State private var image: Image?
     
     let columns = [
         GridItem(.flexible(), spacing: 10),
@@ -23,18 +25,13 @@ struct UserPhotoGridView: View {
     
     var body: some View {
         ScrollView {
-            switch vm.state {
-            case .idle:
-                Text("One moment....")
-            case .loading:
-                ProgressView("Loading...")
-            case .success:
+            VStack {
+                ProfileDetailHeaderView(photo: photo, photoInfo: userPhotoInfo)
                 LazyVGrid(columns: columns, spacing: 10) {
                     ForEach(Array(vm.photos.enumerated()), id: \.element.id) { index, photo in
                         if let image = vm.images[photo.id],
-                           let tag = vm.getPhotoWithTag(photoID: photo.id),
                            let photoInfo = vm.getPhotoInfo(for: photo.id) {
-                            NavigationLink(destination: ImageDetailView(photo: photo, image: image, tag: tag.tag, photoInfo: photoInfo)) {
+                            NavigationLink(destination: ImageDetailView(photo: photo, image: image, photoInfo: photoInfo)) {
                                 Image(uiImage: image)
                                     .resizable()
                                     .aspectRatio(contentMode: .fill)
@@ -48,13 +45,27 @@ struct UserPhotoGridView: View {
                                     vm.loadMorePhotos(userId: userID)
                                 }
                             }
-
+                            
                         }
                     }
                 }
-                .padding()
+            }
+            .padding()
+            switch vm.viewState {
+            case .idle:
+                EmptyView()
+            case .loading:
+                ProgressView("Loading...")
+            case .success:
+                EmptyView()
             case .failure(let error):
-                Text(error.localizedDescription)
+                if let errorMessage = vm.errorMessage {
+                    Text("\(errorMessage)")
+                }
+            case .isLoadingMore:
+                ProgressView("Loading more photos...")
+            case .loadedAll:
+                EmptyView()
             }
         }
         .navigationTitle("\(authorName)'s Photos")
@@ -64,6 +75,6 @@ struct UserPhotoGridView: View {
     }
 }
 
-#Preview {
-    UserPhotoGridView(userID: "12345", authorName: "Sample Author")
-}
+//#Preview {
+//    UserPhotoGridView(userID: "12345", authorName: "Sample Author")
+//}

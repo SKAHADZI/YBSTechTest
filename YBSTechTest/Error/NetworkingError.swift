@@ -49,7 +49,7 @@ class DecodingErrorHandler {
             case .dataCorrupted(let context):
                 LoggingService.shared.error("Data corrupted at \(context.codingPath.map { $0.stringValue }.joined(separator: " -> ")) - \(context.debugDescription)")
             @unknown default:
-                print("Unknown decoding error")
+                LoggingService.shared.error("Unknown decoding error")
             }
             return .decodingError
         } else {

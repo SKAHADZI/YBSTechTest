@@ -24,6 +24,7 @@ class ImageRequestServiceImpl: ImageRequestService, ObservableObject {
         self.networkService = networkService
     }
     
+    // I can make this generic and pass the url constructed in the viewmodel to avoid calling twice
     func downloadImage(photoId: String, url: String) -> AnyPublisher<UIImage, NetworkingError> {
     
         guard let url = URL(string: url) else {

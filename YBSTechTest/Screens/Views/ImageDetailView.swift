@@ -11,14 +11,15 @@ struct ImageDetailView: View {
     
     var photo: Photo
     var image: UIImage
-    var tag: Tag
     var photoInfo: PhotoInfo
+    
+    @EnvironmentObject var vm: PhotoListViewModelImpl
 
     var body: some View {
         ScrollView {
             HStack(alignment: .top) {
                 VStack(alignment: .leading) {
-                    PhotoHeaderView(photo: photo, tag: tag)
+                    ImageNameHeaderView(photo: photo, photoInfo: photoInfo)
                     Image(uiImage: image)
                         .resizable()
                         .scaledToFill()
@@ -41,7 +42,7 @@ struct ImageDetailView: View {
                         .multilineTextAlignment(.leading)
                         .padding(.vertical, 8)
                     Spacer()
-                }.navigationTitle(tag.authorname)
+                }.navigationTitle(photoInfo.photo.owner.username)
                 
                     .padding(.horizontal, 8)
                     .padding(.vertical, nil)

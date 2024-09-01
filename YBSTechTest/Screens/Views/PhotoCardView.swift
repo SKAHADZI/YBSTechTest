@@ -9,56 +9,61 @@ import SwiftUI
 
 struct PhotoCardView: View {
     
+    @EnvironmentObject var vm: PhotoListViewModelImpl
     let photo: Photo
     let image: UIImage
-    let tag: Tag
-    let photoInfo: PhotoInfo
+    let photoInfo: PhotoInfo?
     let photoID: String
-    @State private var isVisible = false    
     var body: some View {
         
-        VStack(alignment: .leading, spacing: nil) {
+        if let photoInfo = photoInfo {
             
-            NavigationLink(destination: UserPhotoGridView(userID: tag.author, authorName: tag.authorname)) {
-                PhotoHeaderView(photo: photo, tag: tag)
-            }
-
-            NavigationLink {
-                ImageDetailView(
-                    photo: photo,
-                    image: image,
-                    tag: tag,
-                    photoInfo: photoInfo
-                )
-            } label: {
-                Image(uiImage: image)
-                    .resizable()
-                    .scaledToFill()
-                    .aspectRatio(contentMode: .fit)
-                    .cornerRadius(10)
-                    .clipped()
-            }.padding(.vertical, 8)
-            
-            Text(photo.title)
-            Text(photo.owner)
-                .font(.subheadline)
-                .foregroundColor(.secondary)
-        }
-        .padding()
-        .onAppear {
-                self.isVisible = true
-        }
-        
-        ScrollView(.horizontal) {
-            if let tags = photoInfo.photo.tags?.tag {
-                HStack {
-                    ForEach(tags, id: \.id) { photoTag in
-                        TagBody(tag: photoTag).scaledToFit()
-                            .padding(.leading, 8)
+            VStack(alignment: .leading, spacing: nil) {
+                NavigationLink(destination: UserPhotoGridView(userID: photoInfo.photo.owner.nsid, authorName: photoInfo.photo.owner.username, userPhotoInfo: photoInfo, photo: photo)) {
+                    ImageNameHeaderView(photo: photo, photoInfo: photoInfo)
+                }
+                
+                NavigationLink {
+                    ImageDetailView(
+                        photo: photo,
+                        image: image,
+                        photoInfo: photoInfo
+                    )
+                } label: {
+                    Image(uiImage: image)
+                        .resizable()
+                        .scaledToFill()
+                        .aspectRatio(contentMode: .fit)
+                        .cornerRadius(10)
+                        .clipped()
+                }.padding(.vertical, 8)
+                
+                Text(photo.title)
+                Text(photo.owner)
+                    .font(.subheadline)
+                    .foregroundColor(.secondary)
+                
+                
+                if let tags = vm.getPhotoWithTag(photoID: photo.id), !tags.isEmpty {
+                    ScrollView(.horizontal) {
+                        HStack {
+                            ForEach(tags, id: \.id) { photoTag in
+                                TagBody(tag: photoTag).scaledToFit()
+                                    .padding(.leading, 8)
+                            }
+                        }
                     }
                 }
             }
+            .padding()
+          
+        } else {
+            Image(uiImage: .placeholder)
+                .resizable()
+                .frame(width: 500, height: 500)
+            Text("Unable to load User")
         }
+        
     }
 }
 

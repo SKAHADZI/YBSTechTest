@@ -36,6 +36,7 @@ struct Content: Codable {
 }
 
 struct Owner: Codable {
+    let nsid: String
     let username: String
     let realname: String
     let location: String?

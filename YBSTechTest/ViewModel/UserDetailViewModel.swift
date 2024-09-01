@@ -5,6 +5,7 @@
 //  Created by Senam Ahadzi on 27/08/2024.
 //
 
+import os
 import Combine
 import Foundation
 import UIKit
@@ -17,7 +18,7 @@ final class UserDataViewModelImpl: UserDetailViewModel, ObservableObject {
     
     private let userProfileImageService: UserProfileImageService
     @Published var profile: Profile?
-    @Published var image:  UIImage?
+    @Published var profileImage:  UIImage?
     @Published var state: ViewState = .idle
 
     private var cancellables = Set<AnyCancellable>()
@@ -39,16 +40,15 @@ final class UserDataViewModelImpl: UserDetailViewModel, ObservableObject {
             .sink { completionResult in
                 switch completionResult {
                 case .finished:
-                    print("\n Got user profile image")
                     self.state = .success
                 case .failure(let error):
                     self.state = .failure(error)
-                    self.image = UIImage(resource: .personPlaceholder)
-                    print("Error loading image for user profile image \(user.id): \(error.localizedDescription)")
+                    self.profileImage = UIImage(resource: .personPlaceholder)
+                    LoggingService.shared.error("\(error.localizedDescription)")
                 }
             } receiveValue: { [weak self] image in
                 guard let self = self else { return }
-                self.image = image
+                self.profileImage = image
         }
             .store(in: &cancellables)
     }
@@ -59,7 +59,7 @@ extension UserDataViewModelImpl {
     private func buildImageURL(photo: Photo) -> String {
         guard let farm = photo.farm else { return "" }
         guard let server = photo.server else { return "" }
-
+        print("buildImageURL: \(photo)")
         return "https://farm\(farm).staticflickr.com/\(server)/buddyicons/\(photo.owner).jpg"
     }
 }
