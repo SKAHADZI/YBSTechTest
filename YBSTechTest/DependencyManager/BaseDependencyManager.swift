@@ -14,7 +14,7 @@ struct DependencyManager {
         container.register(PhotoListServiceImpl(), for: PhotoListService.self)
         container.register(NetworkRepositoryImpl(), for: NetworkRepository.self)
         container.register(ImageRequestServiceImpl(), for: ImageRequestService.self)
-        container.register(TagListServiceImpl(), for: TagListService.self)
+        container.register(PhotoInfoServiceImpl(), for: PhotoInfoService.self)
         container.register(UserProfileImageServiceImpl(), for: UserProfileImageService.self)
     }
     
@@ -30,8 +30,8 @@ struct DependencyManager {
         return container.resolve(ImageRequestService.self) ?? ImageRequestServiceImpl()
     }
     
-    func resolveTagListService() -> TagListService {
-        return container.resolve(TagListService.self) ?? TagListServiceImpl()
+    func resolveTagListService() -> PhotoInfoService {
+        return container.resolve(PhotoInfoService.self) ?? PhotoInfoServiceImpl()
     }
     
     func resolveUserProfileImageService() -> UserProfileImageService {

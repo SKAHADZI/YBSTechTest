@@ -9,7 +9,7 @@ import SwiftUI
 
 struct ImageDetailView: View {
     
-    var photo: Photo
+    var photo: PhotoResponse
     var image: UIImage
     var photoInfo: PhotoInfo
     

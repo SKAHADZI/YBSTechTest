@@ -13,7 +13,7 @@ struct UserPhotoGridView: View {
     let userID: String
     let authorName: String
     var userPhotoInfo: PhotoInfo
-    var photo: Photo
+    var photo: PhotoResponse
     
     @StateObject private var vm = PhotoListViewModelImpl()
     
@@ -76,5 +76,5 @@ struct UserPhotoGridView: View {
 }
 
 //#Preview {
-//    UserPhotoGridView(userID: "12345", authorName: "Sample Author")
+//    UserPhotoGridView(userID: "12345", authorName: "Sample Author", userPhotoInfo: PhotoInfo(photo: PhotoModel(id: <#T##String?#>, tags: <#T##Tags?#>, server: <#T##String?#>, farm: <#T##Int?#>, dateuploaded: <#T##String#>, owner: <#T##Owner#>, title: <#T##Content#>, description: <#T##Content#>, views: <#T##String#>)), photo: <#Photo#>)
 //}

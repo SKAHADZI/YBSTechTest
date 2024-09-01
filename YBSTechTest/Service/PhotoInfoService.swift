@@ -8,12 +8,12 @@
 import Combine
 import Foundation
 
-protocol TagListService {
-    func getTags(for photo: Photo) -> AnyPublisher<PhotoInfo, NetworkingError>
+protocol PhotoInfoService {
+    func getTags(for photo: PhotoResponse) -> AnyPublisher<PhotoInfo, NetworkingError>
 
 }
 
-class TagListServiceImpl: TagListService, ObservableObject {
+class PhotoInfoServiceImpl: PhotoInfoService, ObservableObject {
     
     private let networkService: NetworkRepository
     private let decodingErrorHandler: DecodingErrorHandler
@@ -23,7 +23,7 @@ class TagListServiceImpl: TagListService, ObservableObject {
         self.decodingErrorHandler = decodingErrorHandler
     }
     
-    func getTags(for photo: Photo) -> AnyPublisher<PhotoInfo, NetworkingError> {
+    func getTags(for photo: PhotoResponse) -> AnyPublisher<PhotoInfo, NetworkingError> {
         
         guard let url = URL(string: "\(BaseUrl.baseUrl) /?method=flickr.photos.getInfo&api_key=\(APIKey.apiKey)&photo_id=\(photo.id)&format=json&nojsoncallback=1") else {
             return Fail(error: NetworkingError.invalidURL)

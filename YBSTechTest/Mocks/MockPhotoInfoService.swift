@@ -8,7 +8,7 @@
 import Combine
 import Foundation
 
-class MockTagListService: TagListService {
+class MockPhotoInfoService: PhotoInfoService {
     var errorToReturn: NetworkingError?
     var mockData: PhotoInfo?
     var mockStatusCode: Int
@@ -19,7 +19,7 @@ class MockTagListService: TagListService {
         self.errorToReturn = errorToReturn
     }
 
-    func getTags(for photo: Photo) -> AnyPublisher<PhotoInfo, NetworkingError> {
+    func getTags(for photo: PhotoResponse) -> AnyPublisher<PhotoInfo, NetworkingError> {
         if let error = errorToReturn {
             return Fail(error: error)
                 .eraseToAnyPublisher()

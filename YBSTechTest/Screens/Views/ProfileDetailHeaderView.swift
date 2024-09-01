@@ -9,7 +9,7 @@ import SwiftUI
 
 struct ProfileDetailHeaderView: View {
     
-    var photo: Photo
+    var photo: PhotoResponse
     var photoInfo: PhotoInfo
     @StateObject private var userDataVm = UserDataViewModelImpl()
 

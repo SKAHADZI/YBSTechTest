@@ -8,18 +8,18 @@
 import Foundation
 
 struct PhotoObject: Codable {
-    let photos: Photos
+    let photos: PhotosResponse
 }
 
-struct Photos: Codable {
+struct PhotosResponse: Codable {
     let page: Int
     let pages: Int
     let perpage: Int
     let total: Int
-    let photo: [Photo]?
+    let photo: [PhotoResponse]?
 }
 
-struct Photo: Codable {
+struct PhotoResponse: Codable {
     let uuid = UUID()
     let id: String
     let owner: String

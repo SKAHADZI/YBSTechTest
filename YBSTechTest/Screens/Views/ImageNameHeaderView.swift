@@ -11,7 +11,7 @@ struct ImageNameHeaderView: View {
     
     @StateObject var userDatavm = UserDataViewModelImpl()
     
-    var photo: Photo
+    var photo: PhotoResponse
     var photoInfo: PhotoInfo
     
     var body: some View {

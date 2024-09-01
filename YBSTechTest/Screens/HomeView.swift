@@ -13,10 +13,10 @@ struct HomeView: View {
         NavigationStack {
             ScrollView {
                 LazyVStack(alignment: .leading, spacing: 0) {
-                    ForEach(Array(vm.photos.enumerated()), id: \.element.id) { index, photo in
+                    ForEach(Array(vm.photos.enumerated()), id: \.0) { index, photo in
                         let _ = print("index = \(index)")
                         let photoInfo = vm.getPhotoInfo(for: photo.id)
-
+                        
                         if let image = vm.images[photo.id],
                            let photo = vm.photos.first(where: { $0.id == photo.id })
                         {
@@ -36,7 +36,7 @@ struct HomeView: View {
                     ProgressView("Loading...")
                 case .success:
                     EmptyView()
-                case .failure(let error):
+                case .failure:
                     if let errorMessage = vm.errorMessage {
                         Text("\(errorMessage)")
                     }
@@ -49,7 +49,7 @@ struct HomeView: View {
             .navigationTitle("Photo Gallery")
             .onAppear {
                 if !vm.dataLoaded {
-                    vm.getPhotoSearch(userId: userID) // Load data only if not already loaded
+                    vm.getPhotoSearch(userId: userID)
                 }
                 
             }

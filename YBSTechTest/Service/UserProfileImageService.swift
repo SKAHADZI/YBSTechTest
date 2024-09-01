@@ -56,9 +56,9 @@ class UserProfileImageServiceImpl: UserProfileImageService, ObservableObject {
                       let image = UIImage(data: data) else {
                     throw(NetworkingError.invalidResponse)
                 }
-//                CachingService.shared.cacheImage(image, for: photoId)
-//                LoggingService.shared.info("Adding image to disk for URL: \(url), with id: \(photoId)")
-//                FileStoreManager.shared.addToDisk(image: image, for: photoId)
+                CachingService.shared.cacheImage(image, for: photoId)
+                LoggingService.shared.info("Adding image to disk for URL: \(url), with id: \(photoId)")
+                FileStoreManager.shared.addToDisk(image: image, for: photoId)
                 return image
             }
             .mapError{ error in

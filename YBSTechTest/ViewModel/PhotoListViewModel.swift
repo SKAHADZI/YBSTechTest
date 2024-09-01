@@ -18,10 +18,10 @@ final class PhotoListViewModelImpl: PhotoListViewModel, ObservableObject {
     
     private let photoListService: PhotoListService
     private let imageRequestService: ImageRequestService
-    private let tagService: TagListService
+    private let tagService: PhotoInfoService
     
     @Published var viewState: ViewState = .idle
-    @Published var photos: [Photo] = []
+    @Published var photos: [PhotoResponse] = []
     @Published var errorMessage: String?
     @Published var tags: [String: [Tag]] = [:]
     @Published var images: [String: UIImage] = [:]
@@ -44,7 +44,7 @@ final class PhotoListViewModelImpl: PhotoListViewModel, ObservableObject {
     init(photoListService: PhotoListService = DIContainer.shared.resolve(PhotoListService.self) ?? PhotoListServiceImpl(),
          imageRequestService: ImageRequestService = DIContainer.shared.resolve(ImageRequestService.self) ??
          ImageRequestServiceImpl(),
-         tagListService: TagListService = DIContainer.shared.resolve(TagListService.self) ?? TagListServiceImpl()
+         tagListService: PhotoInfoService = DIContainer.shared.resolve(PhotoInfoService.self) ?? PhotoInfoServiceImpl()
     ) {
         self.photoListService = photoListService
         self.imageRequestService = imageRequestService
@@ -54,6 +54,7 @@ final class PhotoListViewModelImpl: PhotoListViewModel, ObservableObject {
     func getPhotoSearch(userId: String?) {
         
         guard viewState == .idle || viewState == .success || viewState == .isLoadingMore else { return }
+        
            guard !isLastPage else {
                viewState = .loadedAll
                return
@@ -111,7 +112,7 @@ final class PhotoListViewModelImpl: PhotoListViewModel, ObservableObject {
            getPhotoSearch(userId: userId)
     }
     
-    private func loadImages(for photo: Photo) {
+    private func loadImages(for photo: PhotoResponse) {
         let photoID = photo.id
         
         guard images[photoID] == nil else { return }
@@ -138,7 +139,7 @@ final class PhotoListViewModelImpl: PhotoListViewModel, ObservableObject {
             .store(in: &cancellables)
     }
     
-    private func loadPhotoInfo(for photo: Photo) {
+    private func loadPhotoInfo(for photo: PhotoResponse) {
         tagService.getTags(for: photo)
             .receive(on: DispatchQueue.main)
             .sink { completionResult in
@@ -187,7 +188,7 @@ extension PhotoListViewModelImpl {
         return nil
     }
     
-    private func buildImageURL(photo: Photo) -> String {
+    private func buildImageURL(photo: PhotoResponse) -> String {
         guard let server = photo.server else { return "" }
         return "\(BaseUrl.photosUrl)\(server)/\(photo.id)_\(photo.secret).jpg"
     }

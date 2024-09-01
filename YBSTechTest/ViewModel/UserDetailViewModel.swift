@@ -11,13 +11,12 @@ import Foundation
 import UIKit
 
 protocol UserDetailViewModel {
-    func loadUserProfilePic(for user: Photo)
+    func loadUserProfilePic(for user: PhotoResponse)
 }
 
 final class UserDataViewModelImpl: UserDetailViewModel, ObservableObject {
     
     private let userProfileImageService: UserProfileImageService
-    @Published var profile: Profile?
     @Published var profileImage:  UIImage?
     @Published var state: ViewState = .idle
 
@@ -29,7 +28,7 @@ final class UserDataViewModelImpl: UserDetailViewModel, ObservableObject {
         self.userProfileImageService = userProfileImageService
     }
     
-    func loadUserProfilePic(for user: Photo) {
+    func loadUserProfilePic(for user: PhotoResponse) {
         
         state = .loading
         
@@ -56,7 +55,7 @@ final class UserDataViewModelImpl: UserDetailViewModel, ObservableObject {
 
 extension UserDataViewModelImpl {
     
-    private func buildImageURL(photo: Photo) -> String {
+    private func buildImageURL(photo: PhotoResponse) -> String {
         guard let farm = photo.farm else { return "" }
         guard let server = photo.server else { return "" }
         print("buildImageURL: \(photo)")

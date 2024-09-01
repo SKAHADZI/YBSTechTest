@@ -7,6 +7,8 @@
 
 import Foundation
 
+// In future iterations I could add some extra details to the 
+
 struct Profile: Codable {
     let profile: ProfileDetails
 }

@@ -10,7 +10,7 @@ import Combine
 import Foundation
 
 protocol UserDetailService {
-    func loadUserDetails(for owner: Photo) -> AnyPublisher<Profile, NetworkingError>
+    func loadUserDetails(for owner: PhotoResponse) -> AnyPublisher<Profile, NetworkingError>
 }
 
 class UserDetailServiceImpl: UserDetailService, ObservableObject {
@@ -23,7 +23,7 @@ class UserDetailServiceImpl: UserDetailService, ObservableObject {
         self.decodingErrorHandler = decodingErrorHandler
     }
     
-    func loadUserDetails(for owner: Photo) -> AnyPublisher<Profile, NetworkingError> {
+    func loadUserDetails(for owner: PhotoResponse) -> AnyPublisher<Profile, NetworkingError> {
         
         guard let url = URL(string: "\(BaseUrl.baseUrl) /?method=flickr.people.getInfo&api_key=\(APIKey.apiKey)&user_id=\(owner.owner)&format=json&nojsoncallback=1")
                             else {

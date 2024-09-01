@@ -10,7 +10,7 @@ import SwiftUI
 struct PhotoCardView: View {
     
     @EnvironmentObject var vm: PhotoListViewModelImpl
-    let photo: Photo
+    let photo: PhotoResponse
     let image: UIImage
     let photoInfo: PhotoInfo?
     let photoID: String
