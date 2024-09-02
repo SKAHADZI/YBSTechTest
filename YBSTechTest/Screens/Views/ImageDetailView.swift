@@ -28,9 +28,11 @@ struct ImageDetailView: View {
                         .aspectRatio(contentMode: .fit)
                         .cornerRadius(10)
                         .clipped()
+                        .accessibilityIdentifier(AccessibilityIdentifiers.imageDetailImage)
                     Text(photo.title)
                         .font(.headline)
                         .padding(.top, 8)
+                        .accessibilityIdentifier(AccessibilityIdentifiers.imageDetailTitle)
                     
                     if let formattedDate = photoInfo.photo.formattedDate {
                         Text(formattedDate)

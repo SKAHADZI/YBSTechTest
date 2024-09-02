@@ -20,6 +20,8 @@ struct HomeView: View {
                            let photo = vm.photos.first(where: { $0.id == photo.id })
                         {
                             PhotoCardView(photo: photo, image: image, photoInfo: photoInfo ?? nil, photoID: photo.id, router: router)
+                                .accessibilityIdentifier(AccessibilityIdentifiers.photoCardView)
+                            
                                 .onAppear {
                                     if index == vm.photos.count - 1 {
                                         vm.loadMorePhotos( userId: userID)

@@ -28,6 +28,7 @@ struct UserPhotoGridView: View {
         ScrollView {
             VStack {
                 ProfileDetailHeaderView(photo: photo, photoInfo: userPhotoInfo, router: router)
+                
                 LazyVGrid(columns: columns, spacing: 10) {
                     ForEach(Array(vm.photos.enumerated()), id: \.element.id) { index, photo in
                         if let image = vm.images[photo.id],
@@ -44,7 +45,7 @@ struct UserPhotoGridView: View {
                                     .cornerRadius(10)
                             }
                             .padding(.vertical, 8)
-
+                            .accessibilityIdentifier(AccessibilityIdentifiers.gridViewToDetailViewButton)
                             .onAppear {
                                 if index == vm.photos.count - 1 {
                                     // Trigger loading more photos when the last item appears
@@ -79,6 +80,7 @@ struct UserPhotoGridView: View {
         .onAppear {
             vm.getPhotoSearch(userId: userID)
         }
+        .accessibilityIdentifier(AccessibilityIdentifiers.userPhotoGridView)
     }
 }
 

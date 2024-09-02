@@ -28,6 +28,7 @@ struct PhotoCardView: View {
                     ImageNameHeaderView(photo: photo, photoInfo: photoInfo)
 
                 }
+                .accessibilityIdentifier(AccessibilityIdentifiers.goToUserPhotoGridButton)
                 
                 NavigationLink {
                     router.navigate(to: .imageDetail(photo: photo, image: image, photoInfo: photoInfo))
@@ -39,11 +40,14 @@ struct PhotoCardView: View {
                         .cornerRadius(10)
                         .clipped()
                 }
+                .accessibilityIdentifier(AccessibilityIdentifiers.imageDetailButton)
                 
                 Text(photo.title)
+                    .accessibilityIdentifier(AccessibilityIdentifiers.photoCardTitle)
                 Text(photo.owner)
                     .font(.subheadline)
                     .foregroundColor(.secondary)
+                    .accessibilityIdentifier(AccessibilityIdentifiers.photoCardOwner)
                 
                 
                 if let tags = vm.getPhotoWithTag(photoID: photo.id), !tags.isEmpty {
@@ -52,6 +56,7 @@ struct PhotoCardView: View {
                             ForEach(tags, id: \.id) { photoTag in
                                 TagBody(tag: photoTag).scaledToFit()
                                     .padding(.leading, 8)
+                                    .accessibilityIdentifier(AccessibilityIdentifiers.tagBody)
                             }
                         }
                     }

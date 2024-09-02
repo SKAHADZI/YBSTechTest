@@ -15,6 +15,9 @@
 		A71BE4AC2C850BD20031972E /* AppRoutes.swift in Sources */ = {isa = PBXBuildFile; fileRef = A71BE4AB2C850BD20031972E /* AppRoutes.swift */; };
 		A71BE4AE2C850C2F0031972E /* AppRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = A71BE4AD2C850C2F0031972E /* AppRouter.swift */; };
 		A73A4D392C8524D000F1D3D8 /* MockData.swift in Sources */ = {isa = PBXBuildFile; fileRef = A73A4D382C8524D000F1D3D8 /* MockData.swift */; };
+		A73A4D3C2C852A9B00F1D3D8 /* PhotoListViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A73A4D3B2C852A9B00F1D3D8 /* PhotoListViewModelTests.swift */; };
+		A73A4D3E2C85338C00F1D3D8 /* AppRouterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A73A4D3D2C85338C00F1D3D8 /* AppRouterTests.swift */; };
+		A73A4D402C8536E400F1D3D8 /* AccessibilityIdentifiers.swift in Sources */ = {isa = PBXBuildFile; fileRef = A73A4D3F2C8536E400F1D3D8 /* AccessibilityIdentifiers.swift */; };
 		A756715B2C7E56BD00FF982F /* ImageNameHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A756715A2C7E56BD00FF982F /* ImageNameHeaderView.swift */; };
 		A756715D2C7E56C500FF982F /* ImageDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A756715C2C7E56C500FF982F /* ImageDetailView.swift */; };
 		A756715F2C7E585100FF982F /* PhotoInfoService.swift in Sources */ = {isa = PBXBuildFile; fileRef = A756715E2C7E585100FF982F /* PhotoInfoService.swift */; };
@@ -51,6 +54,7 @@
 		A7574B6A2C7D0BCA003C75EF /* PhotoObjectModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7574B692C7D0BCA003C75EF /* PhotoObjectModel.swift */; };
 		A7574B6D2C7D0E20003C75EF /* PhotoListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7574B6C2C7D0E20003C75EF /* PhotoListViewModel.swift */; };
 		A7574B6F2C7D16BB003C75EF /* CachingService.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7574B6E2C7D16BB003C75EF /* CachingService.swift */; };
+		A79D0F372C853BEF00521F92 /* AccessibilityIdentifiers.swift in Sources */ = {isa = PBXBuildFile; fileRef = A73A4D3F2C8536E400F1D3D8 /* AccessibilityIdentifiers.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -79,6 +83,9 @@
 		A71BE4AB2C850BD20031972E /* AppRoutes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppRoutes.swift; sourceTree = "<group>"; };
 		A71BE4AD2C850C2F0031972E /* AppRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppRouter.swift; sourceTree = "<group>"; };
 		A73A4D382C8524D000F1D3D8 /* MockData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockData.swift; sourceTree = "<group>"; };
+		A73A4D3B2C852A9B00F1D3D8 /* PhotoListViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoListViewModelTests.swift; sourceTree = "<group>"; };
+		A73A4D3D2C85338C00F1D3D8 /* AppRouterTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppRouterTests.swift; sourceTree = "<group>"; };
+		A73A4D3F2C8536E400F1D3D8 /* AccessibilityIdentifiers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccessibilityIdentifiers.swift; sourceTree = "<group>"; };
 		A756715A2C7E56BD00FF982F /* ImageNameHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageNameHeaderView.swift; sourceTree = "<group>"; };
 		A756715C2C7E56C500FF982F /* ImageDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageDetailView.swift; sourceTree = "<group>"; };
 		A756715E2C7E585100FF982F /* PhotoInfoService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoInfoService.swift; sourceTree = "<group>"; };
@@ -158,8 +165,18 @@
 			isa = PBXGroup;
 			children = (
 				A73A4D382C8524D000F1D3D8 /* MockData.swift */,
+				A7574B612C7D0634003C75EF /* BaseUrl.swift */,
+				A73A4D3F2C8536E400F1D3D8 /* AccessibilityIdentifiers.swift */,
 			);
 			path = Helpers;
+			sourceTree = "<group>";
+		};
+		A73A4D3A2C852A8500F1D3D8 /* ViewModelTests */ = {
+			isa = PBXGroup;
+			children = (
+				A73A4D3B2C852A9B00F1D3D8 /* PhotoListViewModelTests.swift */,
+			);
+			path = ViewModelTests;
 			sourceTree = "<group>";
 		};
 		A75671682C7E660E00FF982F /* Screens */ = {
@@ -278,10 +295,12 @@
 		A7574B362C7CFE3A003C75EF /* YBSTechTestTests */ = {
 			isa = PBXGroup;
 			children = (
+				A73A4D3A2C852A8500F1D3D8 /* ViewModelTests */,
 				A7574B372C7CFE3A003C75EF /* ImageRequestServiceTests.swift */,
 				A71BE4A42C8504120031972E /* PhotoListServiceTests.swift */,
 				A71BE4A62C8507E40031972E /* NetworkRepositoryTests.swift */,
 				A71BE4A82C8508990031972E /* PhotoInfoTests.swift */,
+				A73A4D3D2C85338C00F1D3D8 /* AppRouterTests.swift */,
 			);
 			path = YBSTechTestTests;
 			sourceTree = "<group>";
@@ -337,7 +356,6 @@
 			isa = PBXGroup;
 			children = (
 				A7574B5F2C7D031B003C75EF /* APIKey.swift */,
-				A7574B612C7D0634003C75EF /* BaseUrl.swift */,
 			);
 			path = API_Key;
 			sourceTree = "<group>";
@@ -525,6 +543,7 @@
 				A756716B2C7E664500FF982F /* UserDetailViewModel.swift in Sources */,
 				A7574B6F2C7D16BB003C75EF /* CachingService.swift in Sources */,
 				A7574B582C7D007B003C75EF /* NetworkRepository.swift in Sources */,
+				A73A4D402C8536E400F1D3D8 /* AccessibilityIdentifiers.swift in Sources */,
 				A75671672C7E640C00FF982F /* UserDetailModel.swift in Sources */,
 				A7574B6D2C7D0E20003C75EF /* PhotoListViewModel.swift in Sources */,
 				A7574B6A2C7D0BCA003C75EF /* PhotoObjectModel.swift in Sources */,
@@ -540,8 +559,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A73A4D3E2C85338C00F1D3D8 /* AppRouterTests.swift in Sources */,
 				A71BE4A92C8508990031972E /* PhotoInfoTests.swift in Sources */,
 				A71BE4A52C8504120031972E /* PhotoListServiceTests.swift in Sources */,
+				A73A4D3C2C852A9B00F1D3D8 /* PhotoListViewModelTests.swift in Sources */,
 				A7574B382C7CFE3A003C75EF /* ImageRequestServiceTests.swift in Sources */,
 				A71BE4A72C8507E40031972E /* NetworkRepositoryTests.swift in Sources */,
 			);
@@ -551,6 +572,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A79D0F372C853BEF00521F92 /* AccessibilityIdentifiers.swift in Sources */,
 				A7574B422C7CFE3A003C75EF /* YBSTechTestUITests.swift in Sources */,
 				A7574B442C7CFE3A003C75EF /* YBSTechTestUITestsLaunchTests.swift in Sources */,
 			);

@@ -20,7 +20,6 @@ struct PhotosResponse: Codable {
 }
 
 struct PhotoResponse: Codable, Hashable {
-    let uuid = UUID()
     let id: String
     let owner: String
     let farm: Int?

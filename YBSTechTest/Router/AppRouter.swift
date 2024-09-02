@@ -9,6 +9,7 @@ import Combine
 import SwiftUI
 
 class AppRouter: ObservableObject {
+    @Published var currentRoute: AppRoutes?
     
     @ViewBuilder
     func navigate(to screen: AppRoutes) -> some View {

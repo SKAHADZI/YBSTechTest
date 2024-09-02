@@ -40,6 +40,7 @@ struct ProfileDetailHeaderView: View {
            .onAppear {
                userDataVm.loadUserProfilePic(for: photo)
            }
+           .accessibilityIdentifier(AccessibilityIdentifiers.profileDetailHeaderView)
        }
 }
 

@@ -38,7 +38,7 @@ struct ImageNameHeaderView: View {
                     
                 }
                 .frame(maxWidth: .infinity, alignment: .leading)
-            case .failure(let error):
+            case .failure:
                 HStack {
                     if let image = userDatavm.profileImage {
                         Image(uiImage: image)
@@ -52,7 +52,6 @@ struct ImageNameHeaderView: View {
                 EmptyView()
             case .loadedAll:
                 EmptyView()
-
             }
         }
         .onAppear {
