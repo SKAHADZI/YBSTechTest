@@ -10,7 +10,7 @@ The 3rd decision was using Image caching. I wanted to keep images around and pre
 
 Another decision that was taken, was to leave out UI Tests and that was unfortunately also due to time. I've added in all of my AccessibilityIdentifiers, to show my intention of starting them but unfortunately time has not been on my side during this take home task. I have tested my router, my viewmodels and services with unit tests, so coverage is not nil. However i'm disappointed not to be able to add that extra layer of testing. If time permitted that would have been finished, due to their low barrier to entry. 
 
-Lastly I have not added any accessibility, again due to time constraints. 
+Lastly I have not added any accessibility, again due to time constraints. However if I had enough time, i would have conducted a full accessibility audit of my app. Adding accessibility labels to the title, image descriptions and user ids. I would also then add the accessibilty labels to the image label views and then also the grid view.
 
 Thanks for taking the time out to review my project, 
 
